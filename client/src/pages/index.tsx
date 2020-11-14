@@ -8,7 +8,7 @@ const Home = () => {
     <Container>
       <div className='flex flex-col w-full items-center'>
         <div className='text-lg mb-4'>
-          Amount: <IdeaCounter />
+          <IdeaCounter />
         </div>
         <div className='flex flex-col md:flex-row w-full'>
           <div className='flex-grow md:mr-4'>
