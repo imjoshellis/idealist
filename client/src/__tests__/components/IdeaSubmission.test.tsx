@@ -7,14 +7,8 @@ import faker from 'faker'
 
 describe('IdeaSubmission', () => {
   it('contains IdeaForm', () => {
-    const { container } = render(<IdeaSubmission />)
-    expect(container.firstChild?.nodeName.toLowerCase()).toBe('form')
-    expect(screen.getByRole('textbox', { name: /idea/i })).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', {
-        name: /add/i
-      })
-    ).toBeInTheDocument()
+    render(<IdeaSubmission />)
+    expect(screen.getByTestId('idea-form')).toBeInTheDocument()
   })
 
   it('updates idea context', async () => {
