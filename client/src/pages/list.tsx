@@ -1,11 +1,18 @@
 import { NextPage } from 'next'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Container from '../components/Container'
 import IdeaList from '../components/IdeaList'
 import Link from 'next/link'
 import SaveList from '../components/SaveList'
+import { useIdeas } from '../providers/IdeaProvider'
+import { useRouter } from 'next/router'
 
 export const List: NextPage = () => {
+  const [ideas] = useIdeas()
+  const router = useRouter()
+  useEffect(() => {
+    if (ideas.length === 0) router.replace('/')
+  }, [ideas])
   return (
     <Container maxWidth='sm'>
       <div className='flex flex-col'>
