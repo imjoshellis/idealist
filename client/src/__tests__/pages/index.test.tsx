@@ -18,4 +18,9 @@ describe('Home page', () => {
       '/list'
     )
   })
+
+  it('displays the current number of ideas', () => {
+    renderHome()
+    expect(screen.getByTestId('idea-counter')).toBeInTheDocument()
+  })
 })
