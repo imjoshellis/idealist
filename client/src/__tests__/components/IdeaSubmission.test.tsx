@@ -40,4 +40,24 @@ describe('IdeaSubmission', () => {
     expect(await screen.findByText(idea1)).toBeInTheDocument()
     expect(await screen.findByText(idea2)).toBeInTheDocument()
   })
+
+  it('does not allow blank submissions', async () => {
+    const Component = () => {
+      const [ideas] = useIdeas()
+      return <>{ideas.length}</>
+    }
+    render(
+      <>
+        <IdeaSubmission />
+        <Component />
+      </>
+    )
+
+    expect(await screen.findByText('0')).toBeInTheDocument()
+
+    userEvent.type(screen.getByLabelText(/idea/i), '')
+    userEvent.click(screen.getByRole('button', { name: /add/i }))
+
+    expect(await screen.findByText('0')).toBeInTheDocument()
+  })
 })
