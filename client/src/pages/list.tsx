@@ -3,6 +3,7 @@ import React from 'react'
 import Container from '../components/Container'
 import IdeaList from '../components/IdeaList'
 import Link from 'next/link'
+import SaveList from '../components/SaveList'
 
 export const List: NextPage = () => {
   return (
@@ -15,6 +16,7 @@ export const List: NextPage = () => {
             add more
           </a>
         </Link>
+        <SaveList />
       </div>
     </Container>
   )

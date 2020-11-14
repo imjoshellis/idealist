@@ -10,6 +10,11 @@ describe('Home page', () => {
     expect(screen.getByTestId('idea-list')).toBeInTheDocument()
   })
 
+  it('renders <SaveList />', () => {
+    renderList()
+    expect(screen.getByTestId('save-list')).toBeInTheDocument()
+  })
+
   it('has an add more link that goes home', () => {
     renderList()
     expect(screen.getByRole('link', { name: /add more/i })).toBeInTheDocument()
