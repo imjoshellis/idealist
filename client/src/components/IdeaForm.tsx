@@ -13,6 +13,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     onSubmit({ idea })
+    setIdea('')
   }
   return (
     <form onSubmit={handleSubmit}>

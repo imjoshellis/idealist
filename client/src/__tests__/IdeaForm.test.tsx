@@ -59,4 +59,14 @@ describe('Idea Form', () => {
     })
     expect(handleSubmit).toHaveBeenCalledTimes(1)
   })
+
+  it('resets the form when submitted', () => {
+    const handleSubmit = jest.fn()
+    render(<IdeaForm onSubmit={handleSubmit} />)
+    const { idea } = buildIdea()
+    userEvent.type(screen.getByLabelText(/idea/i), idea as string)
+    userEvent.click(screen.getByRole('button', { name: /add/i }))
+
+    expect(screen.getByLabelText(/idea/i)).toHaveValue('')
+  })
 })
