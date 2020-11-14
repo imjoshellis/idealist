@@ -12,6 +12,7 @@ export const IdeaSubmission: React.FC<IdeaSubmissionProps> = () => {
       type: ideaActionTypes.ADD_IDEA,
       payload: data.idea
     }
+    if (data.idea === '') return
     setIdeas(ideaReducer(ideas, action) as string[])
   }
 
