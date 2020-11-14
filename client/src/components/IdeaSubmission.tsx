@@ -17,7 +17,6 @@ export const IdeaSubmission: React.FC<IdeaSubmissionProps> = () => {
   return (
     <>
       <IdeaForm onSubmit={onSubmit} />
-      <button>Done</button>
     </>
   )
 }
