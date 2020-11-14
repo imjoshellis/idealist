@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
-interface FormData {
+export interface IdeaFormData {
   idea: string
 }
 
 interface IdeaFormProps {
-  onSubmit: (data: FormData) => void
+  onSubmit: (data: IdeaFormData) => void
 }
 
 export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
