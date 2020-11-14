@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# tailwind generated css
+src/styles/globals.css
