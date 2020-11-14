@@ -10,7 +10,7 @@ const buildIdea = build({
   }
 })
 
-describe('Idea Form', () => {
+describe('IdeaForm', () => {
   it('is a form', () => {
     const handleSubmit = jest.fn()
     const { container } = render(<IdeaForm onSubmit={handleSubmit} />)
