@@ -1,4 +1,4 @@
-import { useIdeas, IdeaProvider } from '../providers/IdeaProvider'
+import { useIdeas, IdeaProvider } from '../../providers/IdeaProvider'
 import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 

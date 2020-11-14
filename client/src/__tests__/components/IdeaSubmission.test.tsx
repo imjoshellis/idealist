@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { render, screen } from '../test/test-utils'
-import IdeaSubmission from '../components/IdeaSubmission'
+import { render, screen } from '../../test/test-utils'
+import IdeaSubmission from '../../components/IdeaSubmission'
 import userEvent from '@testing-library/user-event'
-import { useIdeas } from '../providers/IdeaProvider'
+import { useIdeas } from '../../providers/IdeaProvider'
 import faker from 'faker'
 
 describe('IdeaSubmission', () => {
