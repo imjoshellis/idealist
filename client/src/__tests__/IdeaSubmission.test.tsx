@@ -1,10 +1,9 @@
 import * as React from 'react'
-import { render, screen } from '@testing-library/react'
+import { render, screen } from '../test/test-utils'
 import IdeaSubmission from '../components/IdeaSubmission'
-import { ideaActionTypes, ideaReducer } from '../reducers/ideaReducer'
 import userEvent from '@testing-library/user-event'
-
-jest.mock('../reducers/ideaReducer')
+import { useIdeas } from '../providers/IdeaProvider'
+import faker from 'faker'
 
 describe('IdeaSubmission', () => {
   it('contains IdeaForm', () => {
@@ -23,20 +22,33 @@ describe('IdeaSubmission', () => {
     expect(screen.getByRole('button', { name: /done/i })).toBeInTheDocument()
   })
 
-  it('uses ideaReducer', () => {
-    render(<IdeaSubmission />)
-    const idea = 'idea'
-
-    userEvent.type(screen.getByLabelText(/idea/i), idea)
-    userEvent.click(screen.getByRole('button', { name: /add/i }))
-    expect(ideaReducer).toHaveBeenCalled()
-
-    const action = {
-      type: ideaActionTypes.ADD_IDEA,
-      payload: idea
+  it('updates idea context', async () => {
+    const Component = () => {
+      const [ideas] = useIdeas()
+      return (
+        <>
+          {ideas.map((idea, idx) => (
+            <div key={idx}>{idea}</div>
+          ))}
+        </>
+      )
     }
-    expect(ideaReducer).toHaveBeenCalledWith([], action)
-  })
+    render(
+      <>
+        <IdeaSubmission />
+        <Component />
+      </>
+    )
+    const idea1 = faker.lorem.sentence()
+    const idea2 = faker.lorem.sentence()
 
-  it.todo('updates ideas context')
+    userEvent.type(screen.getByLabelText(/idea/i), idea1)
+    userEvent.click(screen.getByRole('button', { name: /add/i }))
+
+    userEvent.type(screen.getByLabelText(/idea/i), idea2)
+    userEvent.click(screen.getByRole('button', { name: /add/i }))
+
+    expect(await screen.findByText(idea1)).toBeInTheDocument()
+    expect(await screen.findByText(idea2)).toBeInTheDocument()
+  })
 })

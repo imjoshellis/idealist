@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useIdeas } from '../providers/IdeaProvider'
 import { ideaActionTypes, ideaReducer } from '../reducers/ideaReducer'
 import IdeaForm, { IdeaFormData } from './IdeaForm'
 
 interface IdeaSubmissionProps {}
 
 export const IdeaSubmission: React.FC<IdeaSubmissionProps> = () => {
+  const [ideas, setIdeas] = useIdeas()
   const onSubmit = (data: IdeaFormData) => {
-    const state = [] as string[]
     const action = {
       type: ideaActionTypes.ADD_IDEA,
       payload: data.idea
     }
-    ideaReducer(state, action)
+    setIdeas(ideaReducer(ideas, action) as string[])
   }
   return (
     <>
