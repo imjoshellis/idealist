@@ -11,7 +11,7 @@ const Home = () => {
         </div>
         <Link href='/list'>
           <a className='text-link-100 px-8 py-4 rounded uppercase font-bold bg-link-500'>
-            done ->
+            done →
           </a>
         </Link>
       </div>
