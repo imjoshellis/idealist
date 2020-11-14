@@ -5,6 +5,7 @@ const Home = () => {
   return (
     <IdeaProvider>
       <IdeaSubmission />
+      <button>done</button>
     </IdeaProvider>
   )
 }

@@ -10,4 +10,8 @@ describe('Home page', () => {
     expect(screen.getByTestId('idea-form')).toBeInTheDocument()
   })
 
+  it('has a done button', () => {
+    renderHome()
+    expect(screen.getByRole('button', { name: /done/i }))
+  })
 })
