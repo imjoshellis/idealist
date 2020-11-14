@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
-interface FormData {
+export interface IdeaFormData {
   idea: string
 }
 
 interface IdeaFormProps {
-  onSubmit: (data: FormData) => void
+  onSubmit: (data: IdeaFormData) => void
 }
 
 export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
@@ -13,6 +13,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     onSubmit({ idea })
+    setIdea('')
   }
   return (
     <form onSubmit={handleSubmit}>
