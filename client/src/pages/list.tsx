@@ -5,7 +5,8 @@ import IdeaList from '../components/IdeaList'
 
 export const List: NextPage = () => {
   return (
-    <Container>
+    <Container maxWidth='sm'>
+      <h1 className='font-bold text-2xl'>Ideas</h1>
       <IdeaList />
     </Container>
   )
