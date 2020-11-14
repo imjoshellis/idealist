@@ -10,8 +10,12 @@ describe('Home page', () => {
     expect(screen.getByTestId('idea-form')).toBeInTheDocument()
   })
 
-  it('has a done button', () => {
+  it('has a done link to /list', () => {
     renderHome()
-    expect(screen.getByRole('button', { name: /done/i }))
+    expect(screen.getByRole('link', { name: /done/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /done/i })).toHaveAttribute(
+      'href',
+      '/list'
+    )
   })
 })

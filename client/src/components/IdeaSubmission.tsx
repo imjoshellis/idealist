@@ -14,6 +14,7 @@ export const IdeaSubmission: React.FC<IdeaSubmissionProps> = () => {
     }
     setIdeas(ideaReducer(ideas, action) as string[])
   }
+
   return (
     <div data-testid='idea-submission'>
       <IdeaForm onSubmit={onSubmit} />
