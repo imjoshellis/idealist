@@ -16,7 +16,7 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
     setIdea('')
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} data-testid='idea-form'>
       <label htmlFor='idea' className='visuallyhidden'>
         idea
       </label>

@@ -1,4 +1,4 @@
-import { ideaReducer, ideaActionTypes } from './../reducers/ideaReducer'
+import { ideaReducer, ideaActionTypes } from '../../reducers/ideaReducer'
 describe('ideaReducer', () => {
   it('returns state as-is if given bad action type', () => {
     const state = ['hi']

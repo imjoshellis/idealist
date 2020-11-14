@@ -1,20 +1,14 @@
 import * as React from 'react'
-import { render, screen } from '../test/test-utils'
-import IdeaSubmission from '../components/IdeaSubmission'
+import { render, screen } from '../../test/test-utils'
+import IdeaSubmission from '../../components/IdeaSubmission'
 import userEvent from '@testing-library/user-event'
-import { useIdeas } from '../providers/IdeaProvider'
+import { useIdeas } from '../../providers/IdeaProvider'
 import faker from 'faker'
 
 describe('IdeaSubmission', () => {
   it('contains IdeaForm', () => {
-    const { container } = render(<IdeaSubmission />)
-    expect(container.firstChild?.nodeName.toLowerCase()).toBe('form')
-    expect(screen.getByRole('textbox', { name: /idea/i })).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', {
-        name: /add/i
-      })
-    ).toBeInTheDocument()
+    render(<IdeaSubmission />)
+    expect(screen.getByTestId('idea-form')).toBeInTheDocument()
   })
 
   it('updates idea context', async () => {
