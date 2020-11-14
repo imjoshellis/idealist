@@ -12,7 +12,8 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
   const [idea, setIdea] = useState('')
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    onSubmit({ idea })
+    const trimmedIdea = idea.trim()
+    onSubmit({ idea: trimmedIdea })
     setIdea('')
   }
   return (
