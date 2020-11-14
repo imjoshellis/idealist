@@ -17,17 +17,25 @@ export const IdeaForm: React.FC<IdeaFormProps> = ({ onSubmit }) => {
   }
   return (
     <form onSubmit={handleSubmit} data-testid='idea-form'>
-      <label htmlFor='idea' className='visuallyhidden'>
-        idea
-      </label>
-      <input
-        type='text'
-        name='idea'
-        id='idea'
-        value={idea}
-        onChange={e => setIdea(e.target.value)}
-      />
-      <button type='submit'>add</button>
+      <div className='flex flex-row justify-between'>
+        <label htmlFor='idea' className='visuallyhidden'>
+          idea
+        </label>
+        <input
+          type='text'
+          name='idea'
+          id='idea'
+          value={idea}
+          className='bg-surface-700 p-4 rounded flex-grow mr-4'
+          onChange={e => setIdea(e.target.value)}
+        />
+        <button
+          type='submit'
+          className='uppercase font-bold bg-success-500 px-8 py-4 rounded'
+        >
+          add
+        </button>
+      </div>
     </form>
   )
 }
