@@ -13,4 +13,10 @@ describe('Idea Submission', () => {
       })
     ).toBeInTheDocument()
   })
+
+  it('has a done button', () => {
+    render(<IdeaSubmission />)
+    expect(screen.getByRole('button', { name: /done/i })).toBeInTheDocument()
+  })
+
 })
