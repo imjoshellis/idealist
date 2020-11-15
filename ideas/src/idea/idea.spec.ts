@@ -28,4 +28,10 @@ describe('idea', () => {
     const props = generateMakeIdeaProps({ id: undefined })
     expect(Id.isValid(makeIdea(props).getId())).toBe(true)
   })
+
+  it('has a userId', () => {
+    const userId = 'id'
+    const props = generateMakeIdeaProps({ userId })
+    expect(makeIdea(props).getUserId()).toBe(userId)
+  })
 })
