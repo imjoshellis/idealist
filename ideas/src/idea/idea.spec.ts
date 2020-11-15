@@ -1,5 +1,5 @@
 import { generateMakeIdeaProps } from './../test/test-utils'
-import { makeIdea } from '.'
+import { makeIdea, Id } from '.'
 
 describe('idea', () => {
   it('has text', () => {
@@ -26,6 +26,6 @@ describe('idea', () => {
 
   it('has an id', () => {
     const props = generateMakeIdeaProps({ id: undefined })
-    expect(makeIdea(props).getId()).toBeDefined()
+    expect(Id.isValid(makeIdea(props).getId())).toBe(true)
   })
 })
