@@ -10,7 +10,13 @@ interface MakeIdeaProps {
   text: string
   id?: string
   userId: string
-  starUserIds?: string[]
+  score?: { [type: string]: string[] }
+}
+
+export enum ScoreTypes {
+  STAR = 'STAR',
+  LIKE = 'LIKE',
+  REJECT = 'REJECT'
 }
 
 export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
@@ -18,7 +24,11 @@ export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
     text,
     id = Id.makeId(),
     userId,
-    starUserIds = []
+    score = {
+      [ScoreTypes.LIKE]: [],
+      [ScoreTypes.STAR]: [],
+      [ScoreTypes.REJECT]: []
+    }
   }: MakeIdeaProps) => {
     if (!Id.isValid(id)) throw new Error('Idea must have valid id')
 
@@ -30,16 +40,16 @@ export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
       getText: () => sanitizedText,
       getId: () => id,
       getUserId: () => userId,
-      countStars: () => starUserIds.length,
-      addStar: (userId: string) => {
-        if (starUserIds.some(u => userId === u))
+      countScore: ({ type }: { type: ScoreTypes }) => score[type].length,
+      addScore: ({ type, userId }: { type: ScoreTypes; userId: string }) => {
+        if (score[type].some(u => userId === u))
           throw new Error('User has already starred this idea')
-        starUserIds = [...starUserIds, userId]
+        score[type] = [...score[type], userId]
       },
-      removeStar: (userId: string) => {
-        if (!starUserIds.some(u => userId === u))
+      removeScore: ({ type, userId }: { type: ScoreTypes; userId: string }) => {
+        if (!score[type].some(u => userId === u))
           throw new Error('User has not starred this idea')
-        starUserIds = starUserIds.filter(u => userId !== u)
+        score[type] = score[type].filter(u => userId !== u)
       }
     })
   }

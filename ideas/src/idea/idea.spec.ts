@@ -1,3 +1,4 @@
+import { ScoreTypes } from './idea'
 import { generateMakeIdeaProps } from './../test/test-utils'
 import { makeIdea, Id } from '.'
 
@@ -41,46 +42,56 @@ describe('idea', () => {
     expect(makeIdea(props).getUserId()).toBe(userId)
   })
 
-  it('starts with zero stars', () => {
+  it('starts with zero stars, likes, and rejects', () => {
     const props = generateMakeIdeaProps()
-    expect(makeIdea(props).countStars()).toBe(0)
+    for (let type of Object.values(ScoreTypes)) {
+      expect(makeIdea(props).countScore({ type })).toBe(0)
+    }
   })
 
-  it('can add stars by userId', () => {
+  it('can add score types by userId', () => {
     const userId = 'id'
     const props = generateMakeIdeaProps()
     const idea = makeIdea(props)
-    idea.addStar(userId)
-    expect(idea.countStars()).toBe(1)
+    for (let type of Object.values(ScoreTypes)) {
+      idea.addScore({ type, userId })
+      expect(idea.countScore({ type })).toBe(1)
+    }
   })
 
-  it('cannot add stars with userId twice', () => {
+  it('cannot add repeat userId to scores', () => {
     const userId = 'id'
     const props = generateMakeIdeaProps()
     const idea = makeIdea(props)
-    idea.addStar(userId)
-    expect(() => idea.addStar(userId)).toThrow()
-    expect(idea.countStars()).toBe(1)
+    for (let type of Object.values(ScoreTypes)) {
+      idea.addScore({ type, userId })
+      expect(() => idea.addScore({ type, userId })).toThrow()
+      expect(idea.countScore({ type })).toBe(1)
+    }
   })
 
-  it('can remove stars by userId', () => {
+  it('can remove scores by userId', () => {
     const userId = 'id'
     const props = generateMakeIdeaProps()
     const idea = makeIdea(props)
-    idea.addStar(userId)
-    expect(idea.countStars()).toBe(1)
-    idea.removeStar(userId)
-    expect(idea.countStars()).toBe(0)
+    for (let type of Object.values(ScoreTypes)) {
+      idea.addScore({ type, userId })
+      expect(idea.countScore({ type })).toBe(1)
+      idea.removeScore({ type, userId })
+      expect(idea.countScore({ type })).toBe(0)
+    }
   })
 
-  it('cannot remove stars if userId never starred', () => {
+  it('cannot remove scores if userId never scored', () => {
     const userId = 'id'
     const otherUserId = 'id2'
     const props = generateMakeIdeaProps()
     const idea = makeIdea(props)
-    idea.addStar(userId)
-    expect(idea.countStars()).toBe(1)
-    expect(() => idea.removeStar(otherUserId)).toThrow()
-    expect(idea.countStars()).toBe(1)
+    for (let type of Object.values(ScoreTypes)) {
+      idea.addScore({ type, userId })
+      expect(idea.countScore({ type })).toBe(1)
+      expect(() => idea.removeScore({ type, userId: otherUserId })).toThrow()
+      expect(idea.countScore({ type })).toBe(1)
+    }
   })
 })
