@@ -32,7 +32,8 @@ export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
       getUserId: () => userId,
       countStars: () => starUserIds.length,
       addStar: (userId: string) => {
-        if (starUserIds.some(u => userId === u)) return
+        if (starUserIds.some(u => userId === u))
+          throw new Error('User has already starred this idea')
         starUserIds = [...starUserIds, userId]
       }
     })

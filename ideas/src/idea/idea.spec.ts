@@ -59,7 +59,7 @@ describe('idea', () => {
     const props = generateMakeIdeaProps()
     const idea = makeIdea(props)
     idea.addStar(userId)
-    idea.addStar(userId)
+    expect(() => idea.addStar(userId)).toThrow()
     expect(idea.countStars()).toBe(1)
   })
 })
