@@ -2,7 +2,7 @@ import { generateMakeIdeaProps } from './../test/test-utils'
 import { makeIdea } from '.'
 
 describe('idea', () => {
-  it('can set and get text', () => {
+  it('has text', () => {
     const props = generateMakeIdeaProps()
     expect(makeIdea(props).getText()).toBe(props.text)
   })
@@ -24,7 +24,7 @@ describe('idea', () => {
     expect(makeIdea(props).getText()).toBe(text.trim())
   })
 
-  it('can set an id', () => {
+  it('has an id', () => {
     const props = generateMakeIdeaProps({ id: undefined })
     expect(makeIdea(props).getId()).toBeDefined()
   })
