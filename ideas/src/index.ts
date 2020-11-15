@@ -2,7 +2,7 @@ import { app } from './app'
 import { MongoClient } from 'mongodb'
 
 const start = async () => {
-  console.log('Starting Tickets Service: /api/ideas')
+  console.log('Starting Ideas Service: /api/ideas')
   const { JWT_KEY, MONGO_URI } = process.env
 
   if (!JWT_KEY) throw new Error('JWT_KEY must be defined')
