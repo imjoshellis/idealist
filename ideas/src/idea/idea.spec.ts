@@ -23,4 +23,9 @@ describe('idea', () => {
     const props = generateMakeIdeaProps({ text })
     expect(makeIdea(props).getText()).toBe(text.trim())
   })
+
+  it('can set an id', () => {
+    const props = generateMakeIdeaProps({ id: undefined })
+    expect(makeIdea(props).getId()).toBeDefined()
+  })
 })
