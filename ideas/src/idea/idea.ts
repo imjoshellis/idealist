@@ -35,6 +35,11 @@ export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
         if (starUserIds.some(u => userId === u))
           throw new Error('User has already starred this idea')
         starUserIds = [...starUserIds, userId]
+      },
+      removeStar: (userId: string) => {
+        if (!starUserIds.some(u => userId === u))
+          throw new Error('User has not starred this idea')
+        starUserIds = starUserIds.filter(u => userId !== u)
       }
     })
   }

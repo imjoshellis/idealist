@@ -62,4 +62,25 @@ describe('idea', () => {
     expect(() => idea.addStar(userId)).toThrow()
     expect(idea.countStars()).toBe(1)
   })
+
+  it('can remove stars by userId', () => {
+    const userId = 'id'
+    const props = generateMakeIdeaProps()
+    const idea = makeIdea(props)
+    idea.addStar(userId)
+    expect(idea.countStars()).toBe(1)
+    idea.removeStar(userId)
+    expect(idea.countStars()).toBe(0)
+  })
+
+  it('cannot remove stars if userId never starred', () => {
+    const userId = 'id'
+    const otherUserId = 'id2'
+    const props = generateMakeIdeaProps()
+    const idea = makeIdea(props)
+    idea.addStar(userId)
+    expect(idea.countStars()).toBe(1)
+    expect(() => idea.removeStar(otherUserId)).toThrow()
+    expect(idea.countStars()).toBe(1)
+  })
 })
