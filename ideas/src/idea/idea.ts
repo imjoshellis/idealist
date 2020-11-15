@@ -10,10 +10,16 @@ interface MakeIdeaProps {
   text: string
   id?: string
   userId: string
+  starUserIds?: string[]
 }
 
 export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
-  return ({ text, id = Id.makeId(), userId }: MakeIdeaProps) => {
+  return ({
+    text,
+    id = Id.makeId(),
+    userId,
+    starUserIds = []
+  }: MakeIdeaProps) => {
     if (!Id.isValid(id)) throw new Error('Idea must have valid id')
 
     const sanitizedText = sanitize(text).trim()
@@ -24,7 +30,11 @@ export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
       getText: () => sanitizedText,
       getId: () => id,
       getUserId: () => userId,
-      countStars: () => 0
+      countStars: () => starUserIds.length,
+      addStar: (userId: string) => {
+        if (starUserIds.some(u => userId === u)) return
+        starUserIds = [...starUserIds, userId]
+      }
     })
   }
 }

@@ -45,4 +45,21 @@ describe('idea', () => {
     const props = generateMakeIdeaProps()
     expect(makeIdea(props).countStars()).toBe(0)
   })
+
+  it('can add stars by userId', () => {
+    const userId = 'id'
+    const props = generateMakeIdeaProps()
+    const idea = makeIdea(props)
+    idea.addStar(userId)
+    expect(idea.countStars()).toBe(1)
+  })
+
+  it('cannot add stars with userId twice', () => {
+    const userId = 'id'
+    const props = generateMakeIdeaProps()
+    const idea = makeIdea(props)
+    idea.addStar(userId)
+    idea.addStar(userId)
+    expect(idea.countStars()).toBe(1)
+  })
 })
