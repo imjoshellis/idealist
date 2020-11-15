@@ -8,7 +8,7 @@ interface MakeIdeaProps {
 
 export const buildMakeIdea = ({ sanitize }: BuildMakeIdeaProps) => {
   return ({ text }: MakeIdeaProps) => {
-    const sanitizedText = sanitize(text)
+    const sanitizedText = sanitize(text).trim()
     if (!sanitizedText || sanitizedText.length < 2)
       throw new Error('Idea must have valid text')
 
