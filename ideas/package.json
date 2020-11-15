@@ -4,17 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --poll src/index.ts",
-    "build": "tsc",
+    "start": "ts-node-dev --poll src/index.ts",
     "test": "jest --watch",
     "test:ci": "jest"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "setupFilesAfterEnv": [
-      "./src/test/setup.ts"
-    ]
+    "setupFilesAfterEnv": ["./src/test/setup.ts"]
   },
   "dependencies": {
     "@ije-ticketapp/common": "^1.0.18",
@@ -26,7 +23,7 @@
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose-update-if-current": "^1.4.0",
+    "mongodb": "^3.6.3",
     "node-nats-streaming": "^0.3.2",
     "sanitize-html": "^2.1.2",
     "ts-node-dev": "^1.0.0",

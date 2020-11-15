@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideas-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ideas
+  template:
+    metadata:
+      labels:
+        app: ideas
+    spec:
+      containers:
+        - name: ideas
+          image: imjoshellis/idealist-ideas
+          env:
+            - name: NATS_URL
+              value: 'http://nats-srv:4222'
+            - name: NATS_CLUSTER_ID
+              value: 'ticketing'
+            - name: NATS_CLIENT_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MONGO_URI
+              value: 'mongodb://ideas-mongo-srv:27017/ideas'
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ideas-srv
+spec:
+  selector:
+    app: ideas
+  ports:
+    - name: ideas
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

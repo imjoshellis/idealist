@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ideas-mongo-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ideas-mongo
+  template:
+    metadata:
+      labels:
+        app: ideas-mongo
+    spec:
+      containers:
+        - name: ideas-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ideas-mongo-srv
+spec:
+  selector:
+    app: ideas-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
