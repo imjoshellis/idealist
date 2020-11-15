@@ -1,3 +1,6 @@
 import { buildMakeIdea } from './idea'
+import sanitizeHtml from 'sanitize-html'
 
-export const makeIdea = buildMakeIdea()
+const sanitize = (text: string) => sanitizeHtml(text)
+
+export const makeIdea = buildMakeIdea({ sanitize })

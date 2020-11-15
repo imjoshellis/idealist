@@ -10,4 +10,9 @@ describe('idea', () => {
     const invalidText = ''
     expect(() => makeIdea({ text: invalidText })).toThrow()
   })
+
+  it('sanitizes text', () => {
+    const unsanitizedText = '<script>arst</script>text'
+    expect(makeIdea({ text: unsanitizedText }).getText()).toBe('text')
+  })
 })
