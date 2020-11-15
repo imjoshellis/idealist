@@ -40,4 +40,9 @@ describe('idea', () => {
     const props = generateMakeIdeaProps({ userId })
     expect(makeIdea(props).getUserId()).toBe(userId)
   })
+
+  it('starts with zero stars', () => {
+    const props = generateMakeIdeaProps()
+    expect(makeIdea(props).countStars()).toBe(0)
+  })
 })

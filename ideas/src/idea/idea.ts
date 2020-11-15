@@ -23,7 +23,8 @@ export const buildMakeIdea = ({ sanitize, Id }: BuildMakeIdeaProps) => {
     return Object.freeze({
       getText: () => sanitizedText,
       getId: () => id,
-      getUserId: () => userId
+      getUserId: () => userId,
+      countStars: () => 0
     })
   }
 }
