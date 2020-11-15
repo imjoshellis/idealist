@@ -29,6 +29,12 @@ describe('idea', () => {
     expect(Id.isValid(makeIdea(props).getId())).toBe(true)
   })
 
+  it('rejects invalid ids', () => {
+    const props = generateMakeIdeaProps({ id: 'bad id' })
+    expect(Id.isValid(props.id)).toBe(false)
+    expect(() => makeIdea(props)).toThrow()
+  })
+
   it('has a userId', () => {
     const userId = 'id'
     const props = generateMakeIdeaProps({ userId })
