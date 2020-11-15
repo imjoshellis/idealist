@@ -1,5 +1,8 @@
+import { makeIdea } from '.'
+
 describe('idea', () => {
-  it('does nothing', () => {
-    expect(true).toBe(true)
+  it('can set and get text', () => {
+    const text = 'idea'
+    expect(makeIdea({ text }).getText()).toEqual(text)
   })
 })
