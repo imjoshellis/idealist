@@ -1,4 +1,5 @@
 import { buildMakeIdea } from './idea'
+import { buildMakeScore } from './score'
 import sanitizeHtml from 'sanitize-html'
 import { ObjectId } from 'mongodb'
 
@@ -10,3 +11,5 @@ export const Id = Object.freeze({
 
 export const makeIdea = buildMakeIdea({ sanitize, Id })
 export { MakeIdeaProps, ScoreTypes } from './idea'
+
+export const makeScore = buildMakeScore()
