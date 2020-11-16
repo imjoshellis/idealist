@@ -9,25 +9,25 @@ describe('create idea', () => {
   }
 
   it('inserts idea into db without error', async () => {
-    const addIdea = makeCreateIdea({ ideaDb })
+    const createIdea = makeCreateIdea({ ideaDb })
     const newIdea = generateMakeIdeaProps()
-    expect(await addIdea(newIdea)).toBeDefined()
+    expect(await createIdea(newIdea)).toBeDefined()
   })
 
   it('saves the id, userId, and text to the db', async () => {
-    const addIdea = makeCreateIdea({ ideaDb })
+    const createIdea = makeCreateIdea({ ideaDb })
     const newIdea = generateMakeIdeaProps()
-    const inserted = await addIdea(newIdea)
+    const inserted = await createIdea(newIdea)
     expect(inserted.id).toBe(newIdea.id)
     expect(inserted.text).toBe(newIdea.text)
     expect(inserted.userId).toBe(newIdea.userId)
   })
 
   it('initializes with correct default score', async () => {
-    const addIdea = makeCreateIdea({ ideaDb })
+    const createIdea = makeCreateIdea({ ideaDb })
     const ideaProps = generateMakeIdeaProps()
     const idea = makeIdea(ideaProps)
-    const insertedIdea = await addIdea(ideaProps)
+    const insertedIdea = await createIdea(ideaProps)
     for (const type of Object.values(ScoreNames)) {
       const { userIds, value } = insertedIdea.score[type]
       expect(userIds).toEqual(idea.score().getUserIds(type))
