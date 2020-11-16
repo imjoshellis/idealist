@@ -19,7 +19,7 @@ describe('score', () => {
   it('can count each type of score', () => {
     const users = ['a', 'b', 'c']
     for (const type of Object.values(ScoreNames)) {
-      expect(makeScore({ [type]: users }).getScore(type)).toEqual(users.length)
+      expect(makeScore({ [type]: users }).getValue(type)).toEqual(users.length)
     }
   })
 
@@ -28,7 +28,7 @@ describe('score', () => {
     const uniqueUsers = ['a', 'b', 'c']
     for (const type of Object.values(ScoreNames)) {
       expect(makeScore({ [type]: users }).getUserIds(type)).toEqual(uniqueUsers)
-      expect(makeScore({ [type]: users }).getScore(type)).toEqual(
+      expect(makeScore({ [type]: users }).getValue(type)).toEqual(
         uniqueUsers.length
       )
     }
@@ -36,7 +36,7 @@ describe('score', () => {
 
   it('handles blank scores', () => {
     for (const type of Object.values(ScoreNames)) {
-      expect(makeScore().getScore(type)).toEqual(0)
+      expect(makeScore().getValue(type)).toEqual(0)
     }
   })
 })

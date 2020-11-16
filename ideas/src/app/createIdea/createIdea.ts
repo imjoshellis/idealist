@@ -7,16 +7,25 @@ export const makeCreateIdea = ({
 }) => {
   return async (ideaProps: MakeIdeaProps) => {
     const idea = makeIdea({ ...ideaProps })
+    const { STARS, LIKES, REJECTS } = ScoreNames
     return ideaDb.insert({
       id: idea.getId(),
       text: idea.getText(),
       userId: idea.getUserId(),
-      userStars: idea.score().getUserIds(ScoreNames.STARS),
-      starScore: idea.score().getScore(ScoreNames.STARS),
-      userLikes: idea.score().getUserIds(ScoreNames.LIKES),
-      likeScore: idea.score().getScore(ScoreNames.LIKES),
-      userRejects: idea.score().getUserIds(ScoreNames.REJECTS),
-      rejectScore: idea.score().getScore(ScoreNames.REJECTS)
+      score: {
+        stars: {
+          userIds: idea.score().getUserIds(STARS),
+          value: idea.score().getValue(STARS)
+        },
+        likes: {
+          userIds: idea.score().getUserIds(LIKES),
+          value: idea.score().getValue(LIKES)
+        },
+        rejects: {
+          userIds: idea.score().getUserIds(REJECTS),
+          value: idea.score().getValue(REJECTS)
+        }
+      }
     })
   }
 }

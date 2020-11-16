@@ -11,7 +11,7 @@ export const buildMakeScore = (): MakeScore => {
 
     return Object.freeze({
       getUserIds: (type: ScoreNames) => scores[type],
-      getScore: (type: ScoreNames) => scores[type].length
+      getValue: (type: ScoreNames) => scores[type].length
     })
   }
 }

@@ -1,4 +1,6 @@
 import { generateMakeIdeaProps } from '../../__test__'
+import { makeIdea } from '../core/entities'
+import { ScoreNames } from '../core/types'
 import { makeCreateIdea } from './createIdea'
 
 describe('create idea', () => {
@@ -21,15 +23,15 @@ describe('create idea', () => {
     expect(inserted.userId).toBe(newIdea.userId)
   })
 
-  it('initializes with empty score', async () => {
+  it('initializes with correct default score', async () => {
     const addIdea = makeCreateIdea({ ideaDb })
-    const newIdea = generateMakeIdeaProps()
-    const inserted = await addIdea(newIdea)
-    expect(inserted.userStars).toEqual([])
-    expect(inserted.userLikes).toEqual([])
-    expect(inserted.userRejects).toEqual([])
-    expect(inserted.starScore).toEqual(0)
-    expect(inserted.likeScore).toEqual(0)
-    expect(inserted.rejectScore).toEqual(0)
+    const ideaProps = generateMakeIdeaProps()
+    const idea = makeIdea(ideaProps)
+    const insertedIdea = await addIdea(ideaProps)
+    for (const type of Object.values(ScoreNames)) {
+      const { userIds, value } = insertedIdea.score[type]
+      expect(userIds).toEqual(idea.score().getUserIds(type))
+      expect(value).toEqual(idea.score().getValue(type))
+    }
   })
 })

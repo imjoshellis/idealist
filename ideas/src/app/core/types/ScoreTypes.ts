@@ -4,7 +4,7 @@ type MakeScoreProps = {
 
 type Score = Readonly<{
   getUserIds: (type: ScoreNames) => string[]
-  getScore: (type: ScoreNames) => number
+  getValue: (type: ScoreNames) => number
 }>
 
 type MakeScore = (props?: MakeScoreProps) => Score

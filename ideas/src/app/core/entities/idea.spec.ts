@@ -48,7 +48,7 @@ describe('idea', () => {
       expect(
         makeIdea(props)
           .score()
-          .getScore(type)
+          .getValue(type)
       ).toBe(0)
     }
   })
