@@ -1,13 +1,13 @@
-import { clearDb, closeDb, makeDb } from '../__mock__/mock-db'
+// import { clearDb, closeDb, makeDb } from '../__mock__/mock-db'
 
 beforeAll(async () => {
-  await makeDb()
+  // await makeDb()
 })
 
 beforeEach(async () => {
-  await clearDb()
+  // await clearDb()
 })
 
 afterAll(async () => {
-  await closeDb()
+  // await closeDb()
 })
