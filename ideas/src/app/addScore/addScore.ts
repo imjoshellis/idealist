@@ -12,12 +12,13 @@ export const makeAddScore = ({
   ideaDb
 }: {
   ideaDb: {
-    findOne: ({ id }: { id: string }) => InsertedIdea
-    update: (obj: any) => InsertedIdea
+    findOne: ({ id }: { id: string }) => Promise<InsertedIdea>
+    update: (obj: any) => Promise<InsertedIdea>
   }
 }) => {
   return async ({ id, type, userId }: AddScoreProps) => {
     const ideaFromDb = await ideaDb.findOne({ id })
+    if (!ideaFromDb) throw new Error('Idea not found')
 
     const makeScoreProps: MakeScoreProps = {}
     for (const [key, value] of Object.entries(ideaFromDb.score)) {
