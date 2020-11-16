@@ -11,7 +11,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./src/__test__/setup.ts"]
+    "setupFilesAfterEnv": [
+      "./src/__test__/setup.ts"
+    ]
   },
   "dependencies": {
     "@types/cookie-session": "^2.0.41",
@@ -21,10 +23,12 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.6.1",
+    "fp-ts": "^2.8.6",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.3",
     "node-nats-streaming": "^0.3.2",
     "sanitize-html": "^2.1.2",
+    "ts-adt": "^1.0.1",
     "ts-node-dev": "^1.0.0",
     "typescript": "^4.0.3"
   },
