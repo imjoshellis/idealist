@@ -55,4 +55,18 @@ describe('remove score', () => {
       expect(e.message).toBe('Idea not found')
     }
   })
+
+  it('does nothing if userId does not exist', async () => {
+    const removeScore = makeRemoveScore({ ideaDb })
+    for (const type of Object.values(ScoreNames)) {
+      const firstRemoval = await removeScore({ id, userId, type })
+      const firstScore = firstRemoval.score[type]
+      expect(firstScore.userIds).toEqual([])
+      expect(firstScore.value).toEqual(0)
+      const secondRemoval = await removeScore({ id, userId, type })
+      const secondScore = secondRemoval.score[type]
+      expect(secondScore.userIds).toEqual([])
+      expect(secondScore.value).toEqual(0)
+    }
+  })
 })
