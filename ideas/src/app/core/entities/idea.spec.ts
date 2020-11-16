@@ -1,6 +1,6 @@
-import { ScoreTypes } from './idea'
 import { generateMakeIdeaProps } from '../../../__test__'
 import { makeIdea, Id } from '.'
+import { ScoreNames } from '../types'
 
 describe('idea', () => {
   it('has text', () => {
@@ -42,56 +42,14 @@ describe('idea', () => {
     expect(makeIdea(props).getUserId()).toBe(userId)
   })
 
-  it('starts with zero stars, likes, and rejects', () => {
+  it('starts with empty score', () => {
     const props = generateMakeIdeaProps()
-    for (let type of Object.values(ScoreTypes)) {
-      expect(makeIdea(props).countScore({ type })).toBe(0)
-    }
-  })
-
-  it('can add score types by userId', () => {
-    const userId = 'id'
-    const props = generateMakeIdeaProps()
-    const idea = makeIdea(props)
-    for (let type of Object.values(ScoreTypes)) {
-      idea.addScore({ type, userId })
-      expect(idea.countScore({ type })).toBe(1)
-    }
-  })
-
-  it('cannot add repeat userId to scores', () => {
-    const userId = 'id'
-    const props = generateMakeIdeaProps()
-    const idea = makeIdea(props)
-    for (let type of Object.values(ScoreTypes)) {
-      idea.addScore({ type, userId })
-      expect(() => idea.addScore({ type, userId })).toThrow()
-      expect(idea.countScore({ type })).toBe(1)
-    }
-  })
-
-  it('can remove scores by userId', () => {
-    const userId = 'id'
-    const props = generateMakeIdeaProps()
-    const idea = makeIdea(props)
-    for (let type of Object.values(ScoreTypes)) {
-      idea.addScore({ type, userId })
-      expect(idea.countScore({ type })).toBe(1)
-      idea.removeScore({ type, userId })
-      expect(idea.countScore({ type })).toBe(0)
-    }
-  })
-
-  it('cannot remove scores if userId never scored', () => {
-    const userId = 'id'
-    const otherUserId = 'id2'
-    const props = generateMakeIdeaProps()
-    const idea = makeIdea(props)
-    for (let type of Object.values(ScoreTypes)) {
-      idea.addScore({ type, userId })
-      expect(idea.countScore({ type })).toBe(1)
-      expect(() => idea.removeScore({ type, userId: otherUserId })).toThrow()
-      expect(idea.countScore({ type })).toBe(1)
+    for (let type of Object.values(ScoreNames)) {
+      expect(
+        makeIdea(props)
+          .score()
+          .getScore(type)
+      ).toBe(0)
     }
   })
 })

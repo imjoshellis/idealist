@@ -9,7 +9,5 @@ export const Id = Object.freeze({
   isValid: (id: string) => ObjectId.isValid(id)
 })
 
-export const makeIdea = buildMakeIdea({ sanitize, Id })
-export { MakeIdeaProps, ScoreTypes } from './idea'
-
 export const makeScore = buildMakeScore()
+export const makeIdea = buildMakeIdea({ sanitize, Id, makeScore })
