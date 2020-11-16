@@ -9,3 +9,4 @@ export const Id = Object.freeze({
 })
 
 export const makeIdea = buildMakeIdea({ sanitize, Id })
+export { MakeIdeaProps, ScoreTypes } from './idea'

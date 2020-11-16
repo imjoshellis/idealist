@@ -6,7 +6,7 @@ interface BuildMakeIdeaProps {
   }
 }
 
-interface MakeIdeaProps {
+export interface MakeIdeaProps {
   text: string
   id?: string
   userId: string
