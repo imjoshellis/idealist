@@ -1,4 +1,5 @@
-import { makeIdea, MakeIdeaProps, ScoreTypes } from '../core/entities'
+import { makeIdea } from '../core/entities'
+import { MakeIdeaProps, ScoreNames } from '../core/types'
 export const makeCreateIdea = ({
   ideaDb
 }: {
@@ -10,9 +11,12 @@ export const makeCreateIdea = ({
       id: idea.getId(),
       text: idea.getText(),
       userId: idea.getUserId(),
-      starCount: idea.countScore({ type: ScoreTypes.STAR }),
-      likeCount: idea.countScore({ type: ScoreTypes.LIKE }),
-      rejectCount: idea.countScore({ type: ScoreTypes.REJECT })
+      userStars: idea.score().getUserIds(ScoreNames.STARS),
+      starScore: idea.score().getScore(ScoreNames.STARS),
+      userLikes: idea.score().getUserIds(ScoreNames.LIKES),
+      likeScore: idea.score().getScore(ScoreNames.LIKES),
+      userRejects: idea.score().getUserIds(ScoreNames.REJECTS),
+      rejectScore: idea.score().getScore(ScoreNames.REJECTS)
     })
   }
 }

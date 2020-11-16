@@ -21,13 +21,15 @@ describe('create idea', () => {
     expect(inserted.userId).toBe(newIdea.userId)
   })
 
-  it('saves the score counts to the db', async () => {
+  it('initializes with empty score', async () => {
     const addIdea = makeCreateIdea({ ideaDb })
     const newIdea = generateMakeIdeaProps()
     const inserted = await addIdea(newIdea)
-    const scoreCounts = ['starCount', 'likeCount', 'rejectCount']
-    for (const type of scoreCounts) {
-      expect(inserted[type]).toBe(0)
-    }
+    expect(inserted.userStars).toEqual([])
+    expect(inserted.userLikes).toEqual([])
+    expect(inserted.userRejects).toEqual([])
+    expect(inserted.starScore).toEqual(0)
+    expect(inserted.likeScore).toEqual(0)
+    expect(inserted.rejectScore).toEqual(0)
   })
 })
