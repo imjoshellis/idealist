@@ -11,14 +11,14 @@ export const buildMakeIdea = ({
   makeScore
 }: BuildMakeIdeaProps): MakeIdea => {
   return ({
-    text: unsanitizedText,
+    text: unsafeText,
     id = Id.makeId(),
     userId,
     score = makeScore()
   }: MakeIdeaProps): Idea => {
     if (!Id.isValid(id)) throw new Error('Idea must have valid id')
 
-    const text = sanitize(unsanitizedText).trim()
+    const text = sanitize(unsafeText).trim()
     if (!text || text.length < 2) throw new Error('Idea must have valid text')
 
     return Object.freeze({
