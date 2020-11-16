@@ -1,5 +1,5 @@
 import { ScoreTypes } from './idea'
-import { generateMakeIdeaProps } from '../__test__/test-utils'
+import { generateMakeIdeaProps } from '../__test__'
 import { makeIdea, Id } from '.'
 
 describe('idea', () => {

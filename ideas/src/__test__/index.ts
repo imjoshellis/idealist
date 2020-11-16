@@ -4,7 +4,8 @@ import faker from 'faker'
 export const generateMakeIdeaProps = (overrides?: any) => {
   const idea = {
     text: faker.lorem.sentence(),
-    id: new ObjectId().toHexString()
+    id: new ObjectId().toHexString(),
+    userId: new ObjectId().toHexString()
   }
 
   return { ...idea, ...overrides }
