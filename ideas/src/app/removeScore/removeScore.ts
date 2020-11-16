@@ -46,8 +46,8 @@ export const makeRemoveScore = ({
 
     for (const type of Object.values(ScoreNames)) {
       score[type] = {
-        userIds: idea.score().getUserIds(type),
-        value: idea.score().getValue(type)
+        userIds: idea.score[type].userIds,
+        value: idea.score[type].value
       }
     }
 

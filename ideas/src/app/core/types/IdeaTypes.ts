@@ -1,10 +1,10 @@
 import { MakeScore, Score } from './ScoreTypes'
 
 type Idea = Readonly<{
-  getText: () => string
-  getId: () => string
-  getUserId: () => string
-  score: () => Score
+  text: string
+  id: string
+  userId: string
+  score: Score
 }>
 
 interface MakeIdeaProps {

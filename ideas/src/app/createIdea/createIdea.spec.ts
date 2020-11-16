@@ -30,8 +30,8 @@ describe('create idea', () => {
     const insertedIdea = await createIdea(props)
     for (const type of Object.values(ScoreNames)) {
       const { userIds, value } = insertedIdea.score[type]
-      expect(userIds).toEqual(idea.score().getUserIds(type))
-      expect(value).toEqual(idea.score().getValue(type))
+      expect(userIds).toEqual(idea.score[type].userIds)
+      expect(value).toEqual(idea.score[type].value)
     }
   })
 })
