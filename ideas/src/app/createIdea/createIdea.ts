@@ -1,5 +1,5 @@
-import { makeIdea, MakeIdeaProps, ScoreTypes } from './../idea'
-export const makeAddIdea = ({
+import { makeIdea, MakeIdeaProps, ScoreTypes } from '../core/entities'
+export const makeCreateIdea = ({
   ideaDb
 }: {
   ideaDb: { insert: (obj: any) => any }

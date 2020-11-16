@@ -1,7 +1,7 @@
 import { app } from './app'
 import { MongoClient } from 'mongodb'
 
-const start = async () => {
+export const start = async () => {
   console.log('Starting Ideas Service: /api/ideas')
   const { JWT_KEY, MONGO_URI } = process.env
 
@@ -28,5 +28,3 @@ const start = async () => {
     console.log(`Listening on ${PORT}`)
   })
 }
-
-start()

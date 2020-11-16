@@ -1,19 +1,19 @@
-import { generateMakeIdeaProps } from '../__test__'
-import { makeAddIdea } from './add-idea'
+import { generateMakeIdeaProps } from '../../__test__'
+import { makeCreateIdea } from './createIdea'
 
-describe('add idea', () => {
+describe('create idea', () => {
   const ideaDb = {
     insert: (obj: any) => obj
   }
 
   it('inserts idea into db without error', async () => {
-    const addIdea = makeAddIdea({ ideaDb })
+    const addIdea = makeCreateIdea({ ideaDb })
     const newIdea = generateMakeIdeaProps()
     expect(await addIdea(newIdea)).toBeDefined()
   })
 
   it('saves the id, userId, and text to the db', async () => {
-    const addIdea = makeAddIdea({ ideaDb })
+    const addIdea = makeCreateIdea({ ideaDb })
     const newIdea = generateMakeIdeaProps()
     const inserted = await addIdea(newIdea)
     expect(inserted.id).toBe(newIdea.id)
@@ -22,7 +22,7 @@ describe('add idea', () => {
   })
 
   it('saves the score counts to the db', async () => {
-    const addIdea = makeAddIdea({ ideaDb })
+    const addIdea = makeCreateIdea({ ideaDb })
     const newIdea = generateMakeIdeaProps()
     const inserted = await addIdea(newIdea)
     const scoreCounts = ['starCount', 'likeCount', 'rejectCount']
