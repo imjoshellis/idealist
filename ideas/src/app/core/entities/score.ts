@@ -1,4 +1,9 @@
-import { MakeScore, MakeScoreProps, Score, ScoreNames } from '../types'
+import {
+  MakeScore,
+  MakeScoreProps,
+  Score,
+  ScoreNames
+} from '../types/ScoreTypes'
 
 export const buildMakeScore = (): MakeScore => {
   return (props: MakeScoreProps = {}): Score => {

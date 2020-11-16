@@ -1,18 +1,11 @@
-import { MakeScoreProps, Score, ScoreNames } from './ScoreTypes'
+import { MakeScore, Score } from './ScoreTypes'
 
-interface BuildMakeIdeaProps {
-  sanitize: (text: string) => string
-  makeScore: (
-    props?: MakeScoreProps
-  ) => Readonly<{
-    getUserIds: (type: ScoreNames) => string[]
-    getScore: (type: ScoreNames) => number
-  }>
-  Id: {
-    makeId: () => string
-    isValid: (id: string) => boolean
-  }
-}
+type Idea = Readonly<{
+  getText: () => string
+  getId: () => string
+  getUserId: () => string
+  score: () => Score
+}>
 
 interface MakeIdeaProps {
   text: string
@@ -21,4 +14,15 @@ interface MakeIdeaProps {
   score?: Score
 }
 
-export { BuildMakeIdeaProps, MakeIdeaProps }
+type MakeIdea = (props: MakeIdeaProps) => Idea
+
+interface BuildMakeIdeaProps {
+  sanitize: (text: string) => string
+  makeScore: MakeScore
+  Id: {
+    makeId: () => string
+    isValid: (id: string) => boolean
+  }
+}
+
+export { Idea, MakeIdea, BuildMakeIdeaProps, MakeIdeaProps }
