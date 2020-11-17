@@ -16,8 +16,8 @@ describe('idea', () => {
   })
 
   it('sanitizes text', () => {
-    const unsanitizedText = '<script>arst</script>text'
-    const props = generateMakeIdeaProps({ text: unsanitizedText })
+    const unsafeText = '<script>arst</script>text'
+    const props = generateMakeIdeaProps({ text: unsafeText })
     expect(makeIdea(props).text).toBe('text')
   })
 
