@@ -40,7 +40,7 @@ describe('remove score', () => {
   it('can remove score on an idea', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
     const testScoreKey = async (type: ScoreKeys) => {
-      const updatedIdea = await removeScore({ id, userId, type })
+      const updatedIdea = await removeScore({ id, userId, key: type })
       const { userIds, value } = updatedIdea.score[type]
       expect(userIds).toEqual([])
       expect(value).toEqual(0)
@@ -52,7 +52,7 @@ describe('remove score', () => {
     const removeScore = makeRemoveScore({ ideaDb })
     const type = ScoreKeys.likes
     try {
-      await removeScore({ id: 'abc', userId, type })
+      await removeScore({ id: 'abc', userId, key: type })
       fail('Add score should have thrown an error')
     } catch (e) {
       expect(e.message).toBe('Idea not found')
@@ -62,11 +62,11 @@ describe('remove score', () => {
   it('does nothing if userId does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
     const testScoreKey = async (type: ScoreKeys) => {
-      const firstRemoval = await removeScore({ id, userId, type })
+      const firstRemoval = await removeScore({ id, userId, key: type })
       const firstScore = firstRemoval.score[type]
       expect(firstScore.userIds).toEqual([])
       expect(firstScore.value).toEqual(0)
-      const secondRemoval = await removeScore({ id, userId, type })
+      const secondRemoval = await removeScore({ id, userId, key: type })
       const secondScore = secondRemoval.score[type]
       expect(secondScore.userIds).toEqual([])
       expect(secondScore.value).toEqual(0)

@@ -22,22 +22,6 @@ const transformScoreProps = (
   })
 }
 
-const transformScore = (
-  score: Score,
-  keys: ScoreKeys[] = Object.values(ScoreKeys),
-  acc: PartialScore = {}
-): Score => {
-  if (keys.length === 0) return acc as Score
-  const key = keys[0]
-  const userIds = [...new Set(score[key].userIds)]
-  const value = userIds.length
-  const remainingKeys = keys.slice(1, keys.length)
-  return transformScore(score, remainingKeys, {
-    ...acc,
-    [key]: { userIds, value }
-  })
-}
-
 export const buildMakeScore = (): MakeScore => {
   return (props: MakeScoreProps = {}): Score => {
     const score = transformScoreProps(props)

@@ -1,20 +1,6 @@
 import { makeIdea } from '../core/entities'
 import { MakeIdeaProps, ScoreKeys } from '../core/types'
 
-type InsertedScore = {
-  [type in ScoreKeys]: {
-    userIds: string[]
-    value: number
-  }
-}
-
-export interface InsertedIdea {
-  id: string
-  text: string
-  userId: string
-  score: InsertedScore
-}
-
 export const makeCreateIdea = ({
   ideaDb
 }: {

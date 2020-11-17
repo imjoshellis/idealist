@@ -1,11 +1,12 @@
 import { makeScore } from '../core/entities'
-import { MakeScoreProps, ScoreKeys } from '../core/types'
-import { InsertedIdea } from '../createIdea/createIdea'
+import { ScoreKeys } from '../core/types'
+import { InsertedIdea } from '../useCaseTypes'
+import { buildMakeScoreProps } from '../useCaseUtils'
 
 interface RemoveScoreProps {
   id: string
   userId: string
-  type: ScoreKeys
+  key: ScoreKeys
 }
 
 export const makeRemoveScore = ({
@@ -16,19 +17,12 @@ export const makeRemoveScore = ({
     update: (obj: any) => Promise<InsertedIdea>
   }
 }) => {
-  return async ({ id, userId, type }: RemoveScoreProps) => {
+  return async ({ id, userId, key }: RemoveScoreProps) => {
     const ideaFromDb = await ideaDb.findOne({ id })
     if (!ideaFromDb) throw new Error('Idea not found')
 
-    const makeScoreProps: MakeScoreProps = {}
-    for (const [key, value] of Object.entries(ideaFromDb.score)) {
-      makeScoreProps[key as ScoreKeys] =
-        key === type
-          ? value.userIds.filter(u => u !== userId)
-          : [...value.userIds]
-    }
-
-    const score = makeScore(makeScoreProps)
+    const fn = (a: string[]) => a.filter(u => u !== userId)
+    const score = makeScore(buildMakeScoreProps(fn, ideaFromDb.score, key))
 
     return ideaDb.update({ id, score })
   }
