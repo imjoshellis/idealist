@@ -1,8 +1,8 @@
 import { makeIdea } from '../core/entities'
-import { MakeIdeaProps, ScoreNames } from '../core/types'
+import { MakeIdeaProps, ScoreKeys } from '../core/types'
 
 type InsertedScore = {
-  [type in ScoreNames]: {
+  [type in ScoreKeys]: {
     userIds: string[]
     value: number
   }
@@ -30,7 +30,7 @@ export const makeCreateIdea = ({
       }
     } = {}
 
-    for (const type of Object.values(ScoreNames)) {
+    for (const type of Object.values(ScoreKeys)) {
       score[type] = {
         userIds: idea.score[type].userIds,
         value: idea.score[type].value

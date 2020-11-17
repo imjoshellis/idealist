@@ -3,30 +3,44 @@ import {
   MakeScoreProps,
   PartialScore,
   Score,
-  ScoreKey
+  ScoreKeys
 } from '../types/ScoreTypes'
 
-const transformScores = (
-  keys: ScoreKey[],
+const transformScoreProps = (
   props: MakeScoreProps,
+  keys: ScoreKeys[] = Object.values(ScoreKeys),
   acc: PartialScore = {}
 ): Score => {
   if (keys.length === 0) return acc as Score
-  const type = keys[0]
-  const userIds = [...new Set(props[type])]
+  const key = keys[0]
+  const userIds = [...new Set(props[key])]
   const value = userIds.length
   const remainingKeys = keys.slice(1, keys.length)
-  return transformScores(remainingKeys, props, {
+  return transformScoreProps(props, remainingKeys, {
     ...acc,
-    [type]: { userIds, value }
+    [key]: { userIds, value }
+  })
+}
+
+const transformScore = (
+  score: Score,
+  keys: ScoreKeys[] = Object.values(ScoreKeys),
+  acc: PartialScore = {}
+): Score => {
+  if (keys.length === 0) return acc as Score
+  const key = keys[0]
+  const userIds = [...new Set(score[key].userIds)]
+  const value = userIds.length
+  const remainingKeys = keys.slice(1, keys.length)
+  return transformScore(score, remainingKeys, {
+    ...acc,
+    [key]: { userIds, value }
   })
 }
 
 export const buildMakeScore = (): MakeScore => {
   return (props: MakeScoreProps = {}): Score => {
-    const scoreKeys: ScoreKey[] = ['likes', 'rejects', 'stars']
-    const scores = transformScores(scoreKeys, props)
-
-    return Object.freeze(scores)
+    const score = transformScoreProps(props)
+    return Object.freeze(score)
   }
 }

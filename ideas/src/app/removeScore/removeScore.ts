@@ -1,11 +1,11 @@
-import { makeIdea, makeScore } from '../core/entities'
-import { MakeScoreProps, ScoreNames } from '../core/types'
+import { makeScore } from '../core/entities'
+import { MakeScoreProps, ScoreKeys } from '../core/types'
 import { InsertedIdea } from '../createIdea/createIdea'
 
 interface RemoveScoreProps {
   id: string
   userId: string
-  type: ScoreNames
+  type: ScoreKeys
 }
 
 export const makeRemoveScore = ({
@@ -22,34 +22,13 @@ export const makeRemoveScore = ({
 
     const makeScoreProps: MakeScoreProps = {}
     for (const [key, value] of Object.entries(ideaFromDb.score)) {
-      makeScoreProps[key as ScoreNames] =
+      makeScoreProps[key as ScoreKeys] =
         key === type
           ? value.userIds.filter(u => u !== userId)
           : [...value.userIds]
     }
 
-    const scoreEntity = makeScore(makeScoreProps)
-
-    const idea = makeIdea({
-      text: ideaFromDb.text,
-      id: ideaFromDb.id,
-      userId: ideaFromDb.userId,
-      score: scoreEntity
-    })
-
-    const score: {
-      [key: string]: {
-        userIds: string[]
-        value: number
-      }
-    } = {}
-
-    for (const type of Object.values(ScoreNames)) {
-      score[type] = {
-        userIds: idea.score[type].userIds,
-        value: idea.score[type].value
-      }
-    }
+    const score = makeScore(makeScoreProps)
 
     return ideaDb.update({ id, score })
   }

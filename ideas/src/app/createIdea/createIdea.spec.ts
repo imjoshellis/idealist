@@ -1,7 +1,8 @@
+import { forEveryScoreKey } from './../../__test__/index'
 import { generateMakeIdeaProps } from '../../__test__'
 import { makeIdea } from '../core/entities'
-import { ScoreNames } from '../core/types'
 import { makeCreateIdea } from './createIdea'
+import { ScoreKeys } from '../core/types'
 
 describe('create idea', () => {
   const ideaDb = {
@@ -28,10 +29,11 @@ describe('create idea', () => {
     const idea = makeIdea(props)
     const createIdea = makeCreateIdea({ ideaDb })
     const insertedIdea = await createIdea(props)
-    for (const type of Object.values(ScoreNames)) {
-      const { userIds, value } = insertedIdea.score[type]
-      expect(userIds).toEqual(idea.score[type].userIds)
-      expect(value).toEqual(idea.score[type].value)
+    const testScoreKey = (key: ScoreKeys) => {
+      const { userIds, value } = insertedIdea.score[key]
+      expect(userIds).toEqual(idea.score[key].userIds)
+      expect(value).toEqual(idea.score[key].value)
     }
+    forEveryScoreKey(testScoreKey)
   })
 })

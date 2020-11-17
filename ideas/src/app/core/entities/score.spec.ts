@@ -1,42 +1,46 @@
+import { forEveryScoreKey } from './../../../__test__/index'
 import { makeScore } from '.'
-import { ScoreNames } from '../types'
+import { ScoreKeys } from '../types'
 
 describe('score', () => {
   it('has a list of users for each type of score', () => {
     const users = ['a', 'b', 'c']
-    for (const type of Object.values(ScoreNames)) {
-      expect(makeScore({ [type]: users })[type].userIds).toEqual(users)
+    const testScoreKey = (key: ScoreKeys) => {
+      expect(makeScore({ [key]: users })[key].userIds).toEqual(users)
     }
+    forEveryScoreKey(testScoreKey)
   })
 
   it('defaults to empty array if no users are given', () => {
     const score = makeScore()
-    for (const type of Object.values(ScoreNames)) {
-      expect(score[type].userIds).toEqual([])
+    const testScoreKey = (key: ScoreKeys) => {
+      expect(score[key].userIds).toEqual([])
     }
+    forEveryScoreKey(testScoreKey)
   })
 
   it('can count each type of score', () => {
     const users = ['a', 'b', 'c']
-    for (const type of Object.values(ScoreNames)) {
-      expect(makeScore({ [type]: users })[type].value).toEqual(users.length)
+    const testScoreKey = (key: ScoreKeys) => {
+      expect(makeScore({ [key]: users })[key].value).toEqual(users.length)
     }
+    forEveryScoreKey(testScoreKey)
   })
 
   it('removes duplicates', () => {
     const users = ['a', 'b', 'c', 'c']
     const uniqueUsers = ['a', 'b', 'c']
-    for (const type of Object.values(ScoreNames)) {
-      expect(makeScore({ [type]: users })[type].userIds).toEqual(uniqueUsers)
-      expect(makeScore({ [type]: users })[type].value).toEqual(
-        uniqueUsers.length
-      )
+    const testScoreKey = (key: ScoreKeys) => {
+      expect(makeScore({ [key]: users })[key].userIds).toEqual(uniqueUsers)
+      expect(makeScore({ [key]: users })[key].value).toEqual(uniqueUsers.length)
     }
+    forEveryScoreKey(testScoreKey)
   })
 
   it('handles blank scores', () => {
-    for (const type of Object.values(ScoreNames)) {
-      expect(makeScore()[type].value).toEqual(0)
+    const testScoreKey = (key: ScoreKeys) => {
+      expect(makeScore()[key].value).toEqual(0)
     }
+    forEveryScoreKey(testScoreKey)
   })
 })

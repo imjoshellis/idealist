@@ -1,5 +1,6 @@
+import { forEveryScoreKeyAsync } from './../../__test__/index'
 import { generateMakeIdeaProps } from '../../__test__'
-import { ScoreNames } from '../core/types'
+import { ScoreKeys } from '../core/types'
 import { makeCreateIdea } from '../createIdea/createIdea'
 import { makeAddScore } from './../addScore/addScore'
 import { makeRemoveScore } from './removeScore'
@@ -30,24 +31,26 @@ describe('remove score', () => {
     const createIdea = makeCreateIdea({ ideaDb })
     id = (await createIdea(generateMakeIdeaProps())).id
     const addScore = makeAddScore({ ideaDb })
-    for (const type of Object.values(ScoreNames)) {
-      addScore({ id, userId, type })
+    const testScoreKey = async (key: ScoreKeys) => {
+      await addScore({ id, userId, key })
     }
+    await forEveryScoreKeyAsync(testScoreKey)
   })
 
   it('can remove score on an idea', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    for (const type of Object.values(ScoreNames)) {
+    const testScoreKey = async (type: ScoreKeys) => {
       const updatedIdea = await removeScore({ id, userId, type })
       const { userIds, value } = updatedIdea.score[type]
       expect(userIds).toEqual([])
       expect(value).toEqual(0)
     }
+    await forEveryScoreKeyAsync(testScoreKey)
   })
 
   it('throws if idea does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const type = ScoreNames.STARS
+    const type = ScoreKeys.likes
     try {
       await removeScore({ id: 'abc', userId, type })
       fail('Add score should have thrown an error')
@@ -58,7 +61,7 @@ describe('remove score', () => {
 
   it('does nothing if userId does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    for (const type of Object.values(ScoreNames)) {
+    const testScoreKey = async (type: ScoreKeys) => {
       const firstRemoval = await removeScore({ id, userId, type })
       const firstScore = firstRemoval.score[type]
       expect(firstScore.userIds).toEqual([])
@@ -68,5 +71,6 @@ describe('remove score', () => {
       expect(secondScore.userIds).toEqual([])
       expect(secondScore.value).toEqual(0)
     }
+    await forEveryScoreKeyAsync(testScoreKey)
   })
 })
