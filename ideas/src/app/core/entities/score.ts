@@ -1,24 +1,18 @@
-import { MakeScore, PartialScore, Score, ScoreKeys } from '../types/ScoreTypes'
+import { eqString } from 'fp-ts/Eq'
+import { uniq } from 'fp-ts/lib/ReadonlyArray'
+import { MakeScore, MaybeScore, Score, ScoreNames } from '../types/ScoreTypes'
 
-const transformScoreProps = (
-  props: PartialScore,
-  keys: ScoreKeys[] = Object.values(ScoreKeys),
-  acc: PartialScore = {}
-): Score => {
-  if (keys.length === 0) return acc as Score
-  const key = keys[0]
-  const userIds = [...new Set(props[key]?.userIds)]
+export const makeScore: MakeScore = ({
+  type,
+  userIds: userIdsProp = []
+}): Score => {
+  const userIds = uniq(eqString)(userIdsProp)
   const value = userIds.length
-  const remainingKeys = keys.slice(1, keys.length)
-  return transformScoreProps(props, remainingKeys, {
-    ...acc,
-    [key]: { userIds, value }
-  })
+  return Object.freeze({ type, userIds, value })
 }
 
-export const buildMakeScore = (): MakeScore => {
-  return (props: PartialScore = {}): Score => {
-    const score = transformScoreProps(props)
-    return Object.freeze(score)
-  }
+export const getScore = (type: ScoreNames) => (
+  scores: MaybeScore[]
+): MaybeScore => {
+  return scores.filter(s => s.type === type)[0]
 }

@@ -1,7 +1,8 @@
-import { forEveryScoreKey } from './../../../__test__/index'
+import { getScore } from './score'
+import { forEveryScoreName } from './../../../__test__/index'
 import { generateMakeIdeaProps } from '../../../__test__'
 import { makeIdea, Id } from '.'
-import { ScoreKeys } from '../types'
+import { ScoreNames } from '../types'
 
 describe('idea', () => {
   it('has text', () => {
@@ -43,11 +44,13 @@ describe('idea', () => {
     expect(makeIdea(props).userId).toBe(userId)
   })
 
-  it('starts with empty score', () => {
+  it('starts with empty scores', () => {
     const props = generateMakeIdeaProps()
-    const testScoreKey = (key: ScoreKeys) => {
-      expect(makeIdea(props).score[key].value).toBe(0)
+    const test = (type: ScoreNames) => {
+      const idea = makeIdea(props)
+      const score = getScore(type)(idea.scores)
+      expect(score.value).toBe(0)
     }
-    forEveryScoreKey(testScoreKey)
+    forEveryScoreName(test)
   })
 })

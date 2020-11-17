@@ -1,5 +1,6 @@
-import { forEveryScoreKeyAsync, generateMakeIdeaProps } from '../../__test__'
-import { ScoreKeys } from '../core/types'
+import { getScore } from './../core/entities/score'
+import { forEveryScoreNameAsync, generateMakeIdeaProps } from '../../__test__'
+import { ScoreNames } from '../core/types'
 import { makeCreateIdea } from './../createIdea/createIdea'
 import { makeAddScore } from './addScore'
 
@@ -32,20 +33,20 @@ describe('add score', () => {
 
   it('can increase scores on empty idea', async () => {
     const addScore = makeAddScore({ ideaDb })
-    const testScoreKey = async (key: ScoreKeys) => {
-      const updatedIdea = await addScore({ id, userId, key })
-      const { userIds, value } = updatedIdea.score[key]
+    const test = async (type: ScoreNames) => {
+      const updatedIdea = await addScore({ id, userId, type })
+      const { userIds, value } = getScore(type)(updatedIdea.scores)
       expect(userIds).toEqual([userId])
       expect(value).toEqual(1)
     }
-    await forEveryScoreKeyAsync(testScoreKey)
+    await forEveryScoreNameAsync(test)
   })
 
   it('throws if idea does not exist', async () => {
     const addScore = makeAddScore({ ideaDb })
-    const key = ScoreKeys.likes
+    const type = ScoreNames.likes
     try {
-      await addScore({ id: 'abc', userId, key })
+      await addScore({ id: 'abc', userId, type })
       fail('Add score should have thrown an error')
     } catch (e) {
       expect(e.message).toBe('Idea not found')
@@ -56,25 +57,25 @@ describe('add score', () => {
     const addScore = makeAddScore({ ideaDb })
     const userId1 = 'user1'
     const userId2 = 'user2'
-    const testScoreKey = async (key: ScoreKeys) => {
-      await addScore({ id, userId: userId1, key })
-      const updatedIdea = await addScore({ id, userId: userId2, key })
-      const { userIds, value } = updatedIdea.score[key]
+    const test = async (type: ScoreNames) => {
+      await addScore({ id, userId: userId1, type })
+      const updatedIdea = await addScore({ id, userId: userId2, type })
+      const { userIds, value } = getScore(type)(updatedIdea.scores)
       expect(userIds).toEqual([userId1, userId2])
       expect(value).toEqual(2)
     }
-    await forEveryScoreKeyAsync(testScoreKey)
+    await forEveryScoreNameAsync(test)
   })
 
   it('does not increase scores on idea if userId already exists', async () => {
     const addScore = makeAddScore({ ideaDb })
-    const testScoreKey = async (key: ScoreKeys) => {
-      await addScore({ id, userId, key })
-      const updatedIdea = await addScore({ id, userId, key })
-      const { userIds, value } = updatedIdea.score[key]
+    const test = async (type: ScoreNames) => {
+      await addScore({ id, userId, type })
+      const updatedIdea = await addScore({ id, userId, type })
+      const { userIds, value } = getScore(type)(updatedIdea.scores)
       expect(userIds).toEqual([userId])
       expect(value).toEqual(1)
     }
-    await forEveryScoreKeyAsync(testScoreKey)
+    await forEveryScoreNameAsync(test)
   })
 })

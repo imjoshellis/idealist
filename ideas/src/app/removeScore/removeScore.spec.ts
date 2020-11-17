@@ -1,5 +1,6 @@
-import { forEveryScoreKeyAsync, generateMakeIdeaProps } from '../../__test__'
-import { ScoreKeys } from '../core/types'
+import { forEveryScoreNameAsync, generateMakeIdeaProps } from '../../__test__'
+import { getScore } from '../core/entities/score'
+import { ScoreNames } from '../core/types'
 import { makeCreateIdea } from '../createIdea/createIdea'
 import { makeAddScore } from './../addScore/addScore'
 import { makeRemoveScore } from './removeScore'
@@ -30,28 +31,28 @@ describe('remove score', () => {
     const createIdea = makeCreateIdea({ ideaDb })
     id = (await createIdea(generateMakeIdeaProps())).id
     const addScore = makeAddScore({ ideaDb })
-    const setupScoreDb = async (key: ScoreKeys) => {
-      await addScore({ id, userId, key })
+    const setupScoreDb = async (type: ScoreNames) => {
+      await addScore({ id, userId, type })
     }
-    await forEveryScoreKeyAsync(setupScoreDb)
+    await forEveryScoreNameAsync(setupScoreDb)
   })
 
   it('can remove score on an idea', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const testScoreKey = async (key: ScoreKeys) => {
-      const updatedIdea = await removeScore({ id, userId, key })
-      const { userIds, value } = updatedIdea.score[key]
+    const testScoreKey = async (type: ScoreNames) => {
+      const updatedIdea = await removeScore({ id, userId, type })
+      const { userIds, value } = getScore(type)(updatedIdea.scores)
       expect(userIds).toEqual([])
       expect(value).toEqual(0)
     }
-    await forEveryScoreKeyAsync(testScoreKey)
+    await forEveryScoreNameAsync(testScoreKey)
   })
 
   it('throws if idea does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const key = ScoreKeys.likes
+    const type = ScoreNames.likes
     try {
-      await removeScore({ id: 'abc', userId, key })
+      await removeScore({ id: 'abc', userId, type })
       fail('Add score should have thrown an error')
     } catch (e) {
       expect(e.message).toBe('Idea not found')
@@ -60,16 +61,16 @@ describe('remove score', () => {
 
   it('does nothing if userId does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const testScoreKey = async (key: ScoreKeys) => {
-      const firstRemoval = await removeScore({ id, userId, key })
-      const firstScore = firstRemoval.score[key]
+    const testScoreKey = async (type: ScoreNames) => {
+      const firstRemoval = await removeScore({ id, userId, type })
+      const firstScore = getScore(type)(firstRemoval.scores)
       expect(firstScore.userIds).toEqual([])
       expect(firstScore.value).toEqual(0)
-      const secondRemoval = await removeScore({ id, userId, key })
-      const secondScore = secondRemoval.score[key]
+      const secondRemoval = await removeScore({ id, userId, type })
+      const secondScore = getScore(type)(secondRemoval.scores)
       expect(secondScore.userIds).toEqual([])
       expect(secondScore.value).toEqual(0)
     }
-    await forEveryScoreKeyAsync(testScoreKey)
+    await forEveryScoreNameAsync(testScoreKey)
   })
 })

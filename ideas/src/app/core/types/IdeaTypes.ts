@@ -1,28 +1,30 @@
-import { MakeScore, Score } from './ScoreTypes'
+import { Score } from './ScoreTypes'
 
 type Idea = Readonly<{
   text: string
   id: string
   userId: string
-  score: Score
+  scores: Score[]
 }>
 
-interface MakeIdeaProps {
+type PartialIdea = Readonly<{
   text: string
   id?: string
   userId: string
-  score?: Score
-}
+  scores?: Score[]
+}>
 
-type MakeIdea = (props: MakeIdeaProps) => Idea
+type MaybeIdea = Idea | PartialIdea
+
+type MakeIdea = (props: MaybeIdea) => Idea
 
 interface BuildMakeIdeaProps {
   sanitize: (text: string) => string
-  makeScore: MakeScore
+  makeScores: () => Score[]
   Id: {
     makeId: () => string
     isValid: (id: string) => boolean
   }
 }
 
-export { Idea, MakeIdea, BuildMakeIdeaProps, MakeIdeaProps }
+export { Idea, MakeIdea, BuildMakeIdeaProps, PartialIdea, MaybeIdea }

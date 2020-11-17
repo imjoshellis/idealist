@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb'
 import faker from 'faker'
-import { ScoreKeys } from '../app/core/types'
+import { ObjectId } from 'mongodb'
+import { ScoreNames } from '../app/core/types'
 
 export const generateMakeIdeaProps = (overrides?: any) => {
   const idea = {
@@ -12,16 +12,16 @@ export const generateMakeIdeaProps = (overrides?: any) => {
   return { ...idea, ...overrides }
 }
 
-export const forEveryScoreKey = (fn: (key: ScoreKeys) => void): void => {
-  for (const key of Object.values(ScoreKeys)) {
-    fn(key)
+export const forEveryScoreName = (fn: (name: ScoreNames) => void): void => {
+  for (const name of Object.values(ScoreNames)) {
+    fn(name)
   }
 }
 
-export const forEveryScoreKeyAsync = async (
-  fn: (key: ScoreKeys) => Promise<void>
+export const forEveryScoreNameAsync = async (
+  fn: (name: ScoreNames) => Promise<void>
 ): Promise<void> => {
-  for (const key of Object.values(ScoreKeys)) {
-    await fn(key)
+  for (const name of Object.values(ScoreNames)) {
+    await fn(name)
   }
 }

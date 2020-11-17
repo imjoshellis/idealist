@@ -1,52 +1,43 @@
-import { forEveryScoreKey } from './../../../__test__/index'
+import { pipe } from 'fp-ts/lib/function'
 import { makeScore } from '.'
-import { ScoreKeys } from '../types'
+import { ScoreNames } from '../types'
+import { forEveryScoreName } from './../../../__test__/index'
 
 describe('score', () => {
   const userIds = ['a', 'b', 'c']
 
-  it('has a list of users for each type of score', () => {
-    const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore({ [key]: { userIds } })[key].userIds).toEqual(userIds)
+  it('has a list of users', () => {
+    const testScores = (type: ScoreNames) => {
+      const score = pipe({ type, userIds }, makeScore)
+      expect(score.userIds).toEqual(userIds)
     }
-    forEveryScoreKey(testScoreKey)
+    forEveryScoreName(testScores)
   })
 
   it('defaults to empty array if no users are given', () => {
-    const score = makeScore()
-    const testScoreKey = (key: ScoreKeys) => {
-      expect(score[key].userIds).toEqual([])
+    const testScores = (type: ScoreNames) => {
+      const score = makeScore({ type })
+      expect(score.userIds).toEqual([])
     }
-    forEveryScoreKey(testScoreKey)
+    forEveryScoreName(testScores)
   })
 
-  it('can count each type of score', () => {
-    const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore({ [key]: { userIds } })[key].value).toEqual(
-        userIds.length
-      )
+  it('creates correct values', () => {
+    const testScores = (type: ScoreNames) => {
+      const score = pipe({ type, userIds }, makeScore)
+      expect(score.value).toEqual(userIds.length)
     }
-    forEveryScoreKey(testScoreKey)
+    forEveryScoreName(testScores)
   })
 
   it('removes duplicates', () => {
     const userIds = ['a', 'b', 'c', 'c']
     const uniqueUsers = ['a', 'b', 'c']
-    const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore({ [key]: { userIds } })[key].userIds).toEqual(
-        uniqueUsers
-      )
-      expect(makeScore({ [key]: { userIds } })[key].value).toEqual(
-        uniqueUsers.length
-      )
+    const testScores = (type: ScoreNames) => {
+      const score = pipe({ type, userIds }, makeScore)
+      expect(score.userIds).toEqual(uniqueUsers)
+      expect(score.value).toEqual(uniqueUsers.length)
     }
-    forEveryScoreKey(testScoreKey)
-  })
-
-  it('handles blank scores', () => {
-    const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore()[key].value).toEqual(0)
-    }
-    forEveryScoreKey(testScoreKey)
+    forEveryScoreName(testScores)
   })
 })

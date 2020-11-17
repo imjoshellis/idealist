@@ -1,2 +1,9 @@
-type Eq<T> = (x: T) => (y: T) => boolean
-export const not: Eq<unknown> = x => y => x !== y
+import { ScoreNames } from './core/types'
+import { InsertedScore } from './useCaseTypes'
+
+export const makeScoreProps = (type: ScoreNames, score: InsertedScore) => (
+  userIds: string[]
+) => ({
+  ...score,
+  [key]: { userIds }
+})
