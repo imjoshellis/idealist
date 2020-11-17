@@ -1,3 +1,5 @@
+import * as E from 'fp-ts/lib/Either'
+
 type Score = Readonly<{
   type: ScoreNames
   userIds: readonly string[]
@@ -12,7 +14,20 @@ type PartialScore = Readonly<{
 
 type MaybeScore = PartialScore | Score
 
-type MakeScore = (score: PartialScore) => Score
+type EitherScore = E.Either<ScoreNotFoundError, Score>
+
+class ScoreNotFoundError extends Error {
+  public _tag: 'ScoreNotFoundError'
+
+  private constructor () {
+    super('Score not found')
+    this._tag = 'ScoreNotFoundError'
+  }
+
+  public static of (): ScoreNotFoundError {
+    return new ScoreNotFoundError()
+  }
+}
 
 enum ScoreNames {
   stars = 'stars',
@@ -20,4 +35,11 @@ enum ScoreNames {
   rejects = 'rejects'
 }
 
-export { Score, PartialScore, MakeScore, ScoreNames, MaybeScore }
+export {
+  Score,
+  PartialScore,
+  ScoreNames,
+  MaybeScore,
+  EitherScore,
+  ScoreNotFoundError
+}

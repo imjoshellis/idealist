@@ -1,6 +1,7 @@
-import { getScore } from './../core/entities/score'
+import { pipe } from 'fp-ts/lib/function'
 import { forEveryScoreNameAsync, generateMakeIdeaProps } from '../../__test__'
 import { ScoreNames } from '../core/types'
+import { _unsafeExtractScore } from './../../__test__/index'
 import { makeCreateIdea } from './../createIdea/createIdea'
 import { makeAddScore } from './addScore'
 
@@ -35,7 +36,11 @@ describe('add score', () => {
     const addScore = makeAddScore({ ideaDb })
     const test = async (type: ScoreNames) => {
       const updatedIdea = await addScore({ id, userId, type })
-      const { userIds, value } = getScore(type)(updatedIdea.scores)
+      const { userIds, value } = pipe(
+        type,
+        updatedIdea.getScoreByType,
+        _unsafeExtractScore
+      )
       expect(userIds).toEqual([userId])
       expect(value).toEqual(1)
     }
@@ -60,7 +65,11 @@ describe('add score', () => {
     const test = async (type: ScoreNames) => {
       await addScore({ id, userId: userId1, type })
       const updatedIdea = await addScore({ id, userId: userId2, type })
-      const { userIds, value } = getScore(type)(updatedIdea.scores)
+      const { userIds, value } = pipe(
+        type,
+        updatedIdea.getScoreByType,
+        _unsafeExtractScore
+      )
       expect(userIds).toEqual([userId1, userId2])
       expect(value).toEqual(2)
     }
@@ -72,7 +81,11 @@ describe('add score', () => {
     const test = async (type: ScoreNames) => {
       await addScore({ id, userId, type })
       const updatedIdea = await addScore({ id, userId, type })
-      const { userIds, value } = getScore(type)(updatedIdea.scores)
+      const { userIds, value } = pipe(
+        type,
+        updatedIdea.getScoreByType,
+        _unsafeExtractScore
+      )
       expect(userIds).toEqual([userId])
       expect(value).toEqual(1)
     }

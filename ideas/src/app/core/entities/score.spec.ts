@@ -7,37 +7,37 @@ describe('score', () => {
   const userIds = ['a', 'b', 'c']
 
   it('has a list of users', () => {
-    const testScores = (type: ScoreNames) => {
+    const test = (type: ScoreNames) => {
       const score = pipe({ type, userIds }, makeScore)
       expect(score.userIds).toEqual(userIds)
     }
-    forEveryScoreName(testScores)
+    forEveryScoreName(test)
   })
 
   it('defaults to empty array if no users are given', () => {
-    const testScores = (type: ScoreNames) => {
+    const test = (type: ScoreNames) => {
       const score = makeScore({ type })
       expect(score.userIds).toEqual([])
     }
-    forEveryScoreName(testScores)
+    forEveryScoreName(test)
   })
 
   it('creates correct values', () => {
-    const testScores = (type: ScoreNames) => {
+    const test = (type: ScoreNames) => {
       const score = pipe({ type, userIds }, makeScore)
       expect(score.value).toEqual(userIds.length)
     }
-    forEveryScoreName(testScores)
+    forEveryScoreName(test)
   })
 
   it('removes duplicates', () => {
     const userIds = ['a', 'b', 'c', 'c']
     const uniqueUsers = ['a', 'b', 'c']
-    const testScores = (type: ScoreNames) => {
+    const test = (type: ScoreNames) => {
       const score = pipe({ type, userIds }, makeScore)
       expect(score.userIds).toEqual(uniqueUsers)
       expect(score.value).toEqual(uniqueUsers.length)
     }
-    forEveryScoreName(testScores)
+    forEveryScoreName(test)
   })
 })

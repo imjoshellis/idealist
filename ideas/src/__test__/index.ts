@@ -1,6 +1,7 @@
 import faker from 'faker'
+import * as E from 'fp-ts/lib/Either'
 import { ObjectId } from 'mongodb'
-import { ScoreNames } from '../app/core/types'
+import { EitherScore, ScoreNames } from '../app/core/types'
 
 export const generateMakeIdeaProps = (overrides?: any) => {
   const idea = {
@@ -24,4 +25,9 @@ export const forEveryScoreNameAsync = async (
   for (const name of Object.values(ScoreNames)) {
     await fn(name)
   }
+}
+
+export const _unsafeExtractScore = (eitherScore: EitherScore) => {
+  if (E.isLeft(eitherScore)) throw eitherScore.left
+  return eitherScore.right
 }

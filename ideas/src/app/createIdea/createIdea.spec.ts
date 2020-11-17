@@ -1,8 +1,12 @@
-import { getScore } from './../core/entities/score'
-import { forEveryScoreName, generateMakeIdeaProps } from '../../__test__'
+import { pipe } from 'fp-ts/lib/function'
+import {
+  forEveryScoreName,
+  generateMakeIdeaProps,
+  _unsafeExtractScore
+} from '../../__test__'
 import { makeIdea } from '../core/entities'
-import { makeCreateIdea } from './createIdea'
 import { ScoreNames } from '../core/types'
+import { makeCreateIdea } from './createIdea'
 
 describe('create idea', () => {
   const ideaDb = {
@@ -30,8 +34,12 @@ describe('create idea', () => {
     const createIdea = makeCreateIdea({ ideaDb })
     const insertedIdea = await createIdea(props)
     const test = (type: ScoreNames) => {
-      const { userIds, value } = getScore(type)(insertedIdea.scores)
-      const score = getScore(type)(idea.scores)
+      const { userIds, value } = pipe(
+        type,
+        insertedIdea.getScoreByType,
+        _unsafeExtractScore
+      )
+      const score = pipe(type, idea.getScoreByType, _unsafeExtractScore)
       expect(userIds).toEqual(score.userIds)
       expect(value).toEqual(score.value)
     }

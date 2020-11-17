@@ -1,5 +1,5 @@
-import { makeScore } from '../core/entities'
-import { ScoreNames } from '../core/types'
+import { makeIdea, makeScore } from '../core/entities'
+import { Idea, ScoreNames } from '../core/types'
 import { InsertedIdea } from '../useCaseTypes'
 
 interface AddScoreProps {
@@ -7,16 +7,18 @@ interface AddScoreProps {
   userId: string
   type: ScoreNames
 }
+type AddScore = (props: AddScoreProps) => Promise<Idea>
 
-export const makeAddScore = ({
-  ideaDb
-}: {
+interface MakeAddScoreProps {
   ideaDb: {
     findOne: ({ id }: { id: string }) => Promise<InsertedIdea>
     update: (obj: any) => Promise<InsertedIdea>
   }
-}) => {
-  return async ({ id, userId, type }: AddScoreProps): Promise<InsertedIdea> => {
+}
+type MakeAddScore = (props: MakeAddScoreProps) => AddScore
+
+export const makeAddScore: MakeAddScore = ({ ideaDb }) => {
+  return async ({ id, userId, type }) => {
     const ideaFromDb = await ideaDb.findOne({ id })
     if (!ideaFromDb) throw new Error('Idea not found')
 
@@ -24,6 +26,9 @@ export const makeAddScore = ({
       s.type === type ? makeScore({ type, userIds: [...s.userIds, userId] }) : s
     )
 
-    return ideaDb.update({ id, scores })
+    const idea = makeIdea({ ...ideaFromDb, scores })
+    await ideaDb.update({ id, scores: idea.scores })
+
+    return idea
   }
 }

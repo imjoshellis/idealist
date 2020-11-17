@@ -1,8 +1,8 @@
-import { getScore } from './score'
-import { forEveryScoreName } from './../../../__test__/index'
-import { generateMakeIdeaProps } from '../../../__test__'
-import { makeIdea, Id } from '.'
+import { pipe } from 'fp-ts/lib/function'
+import { Id, makeIdea } from '.'
+import { generateMakeIdeaProps, _unsafeExtractScore } from '../../../__test__'
 import { ScoreNames } from '../types'
+import { forEveryScoreName } from './../../../__test__/index'
 
 describe('idea', () => {
   it('has text', () => {
@@ -48,7 +48,7 @@ describe('idea', () => {
     const props = generateMakeIdeaProps()
     const test = (type: ScoreNames) => {
       const idea = makeIdea(props)
-      const score = getScore(type)(idea.scores)
+      const score = pipe(type, idea.getScoreByType, _unsafeExtractScore)
       expect(score.value).toBe(0)
     }
     forEveryScoreName(test)
