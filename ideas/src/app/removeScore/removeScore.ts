@@ -1,21 +1,5 @@
-import { makeIdea, makeScore } from '../core/entities'
-import { Idea, ScoreNames } from '../core/types'
-import { InsertedIdea } from '../useCaseTypes'
-
-interface RemoveScoreProps {
-  id: string
-  userId: string
-  type: ScoreNames
-}
-type RemoveScore = (props: RemoveScoreProps) => Promise<Idea>
-
-interface MakeRemoveScoreProps {
-  ideaDb: {
-    findOne: ({ id }: { id: string }) => Promise<InsertedIdea>
-    update: (obj: any) => Promise<InsertedIdea>
-  }
-}
-type MakeRemoveScore = (props: MakeRemoveScoreProps) => RemoveScore
+import { MakeRemoveScore } from './removeScore.types'
+import { makeIdea, makeScore } from '../core'
 
 export const makeRemoveScore: MakeRemoveScore = ({ ideaDb }) => {
   return async ({ id, userId, type }) => {

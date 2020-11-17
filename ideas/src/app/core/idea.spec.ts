@@ -1,8 +1,10 @@
 import { pipe } from 'fp-ts/lib/function'
-import { Id, makeIdea } from '.'
-import { generateMakeIdeaProps, _unsafeExtractScore } from '../../../__test__'
-import { ScoreNames } from '../types'
-import { forEveryScoreName } from './../../../__test__/index'
+import { Id, makeIdea, ScoreNames } from '.'
+import {
+  forEveryScoreName,
+  generateMakeIdeaProps,
+  _unsafeExtractScore
+} from '../../__test__'
 
 describe('idea', () => {
   it('has text', () => {

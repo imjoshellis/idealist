@@ -8,7 +8,7 @@ import {
   Score,
   ScoreNames,
   ScoreNotFoundError
-} from '../types/ScoreTypes'
+} from '.'
 import { pipe } from 'fp-ts/lib/function'
 
 export type MakeScore = (score: PartialScore) => Score

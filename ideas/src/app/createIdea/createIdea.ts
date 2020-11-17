@@ -1,18 +1,8 @@
-import { makeIdea } from '../core/entities'
-import { Idea, MaybeIdea } from '../core/types'
-import { InsertedIdea } from '../useCaseTypes'
-
-type CreateIdea = (props: MaybeIdea) => Promise<Idea>
-
-interface MakeCreateIdeaProps {
-  ideaDb: {
-    insert: (obj: any) => Promise<InsertedIdea>
-  }
-}
-type MakeCreateIdea = (props: MakeCreateIdeaProps) => CreateIdea
+import { makeIdea } from '../core'
+import { MakeCreateIdea } from './createIdea.types'
 
 export const makeCreateIdea: MakeCreateIdea = ({ ideaDb }) => {
-  return async (ideaProps: MaybeIdea) => {
+  return async ideaProps => {
     const idea = makeIdea({ ...ideaProps })
 
     const { id, text, userId, scores } = idea

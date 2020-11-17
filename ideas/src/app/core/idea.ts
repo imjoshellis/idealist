@@ -1,7 +1,5 @@
 import { pipe } from 'fp-ts/lib/function'
-import { Score } from '../types'
-import { MakeIdea } from '../types/IdeaTypes'
-import { GetScore } from './score'
+import { GetScore, MakeIdea, Score } from '.'
 
 type BuildMakeIdea = (props: {
   sanitize: (text: string) => string

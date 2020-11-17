@@ -1,7 +1,7 @@
 import faker from 'faker'
 import * as E from 'fp-ts/lib/Either'
 import { ObjectId } from 'mongodb'
-import { EitherScore, ScoreNames } from '../app/core/types'
+import { EitherScore, ScoreNames } from '../app/core'
 
 export const generateMakeIdeaProps = (overrides?: any) => {
   const idea = {

@@ -4,9 +4,9 @@ import {
   generateMakeIdeaProps,
   _unsafeExtractScore
 } from '../../__test__'
-import { ScoreNames } from '../core/types'
+import { ScoreNames } from '../core'
 import { makeCreateIdea } from '../createIdea/createIdea'
-import { makeAddScore } from './../addScore/addScore'
+import { makeAddScore } from '../addScore/addScore'
 import { makeRemoveScore } from './removeScore'
 
 describe('remove score', () => {

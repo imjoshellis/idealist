@@ -4,8 +4,7 @@ import {
   generateMakeIdeaProps,
   _unsafeExtractScore
 } from '../../__test__'
-import { makeIdea } from '../core/entities'
-import { ScoreNames } from '../core/types'
+import { makeIdea, ScoreNames } from '../core'
 import { makeCreateIdea } from './createIdea'
 
 describe('create idea', () => {

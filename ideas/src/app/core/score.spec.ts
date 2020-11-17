@@ -1,7 +1,6 @@
 import { pipe } from 'fp-ts/lib/function'
-import { makeScore } from '.'
-import { ScoreNames } from '../types'
-import { forEveryScoreName } from './../../../__test__/index'
+import { makeScore, ScoreNames } from '.'
+import { forEveryScoreName } from './../../__test__'
 
 describe('score', () => {
   const userIds = ['a', 'b', 'c']

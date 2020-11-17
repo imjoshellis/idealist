@@ -1,5 +1,4 @@
-import { GetScoreByType } from './../entities/score'
-import { Score } from './ScoreTypes'
+import { GetScoreByType, Score } from '.'
 
 type Idea = Readonly<{
   text: string
