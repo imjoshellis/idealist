@@ -1,6 +1,5 @@
-import { generateMakeIdeaProps } from '../../__test__'
+import { forEveryScoreKeyAsync, generateMakeIdeaProps } from '../../__test__'
 import { ScoreKeys } from '../core/types'
-import { forEveryScoreKeyAsync } from './../../__test__/index'
 import { makeCreateIdea } from './../createIdea/createIdea'
 import { makeAddScore } from './addScore'
 

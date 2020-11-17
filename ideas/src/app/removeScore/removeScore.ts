@@ -1,7 +1,7 @@
 import { makeScore } from '../core/entities'
 import { ScoreKeys } from '../core/types'
 import { InsertedIdea } from '../useCaseTypes'
-import { buildMakeScoreProps } from '../useCaseUtils'
+import { not } from '../useCaseUtils'
 
 interface RemoveScoreProps {
   id: string
@@ -21,8 +21,9 @@ export const makeRemoveScore = ({
     const ideaFromDb = await ideaDb.findOne({ id })
     if (!ideaFromDb) throw new Error('Idea not found')
 
-    const fn = (a: string[]) => a.filter(u => u !== userId)
-    const score = makeScore(buildMakeScoreProps(fn, ideaFromDb.score, key))
+    const userIds = ideaFromDb.score[key].userIds.filter(not(userId))
+    const newScore = { [key]: { userIds } }
+    const score = makeScore({ ...ideaFromDb.score, ...newScore })
 
     return ideaDb.update({ id, score })
   }

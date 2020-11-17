@@ -1,5 +1,4 @@
-import { forEveryScoreKey } from './../../__test__/index'
-import { generateMakeIdeaProps } from '../../__test__'
+import { forEveryScoreKey, generateMakeIdeaProps } from '../../__test__'
 import { makeIdea } from '../core/entities'
 import { makeCreateIdea } from './createIdea'
 import { ScoreKeys } from '../core/types'

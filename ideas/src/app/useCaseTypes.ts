@@ -1,7 +1,7 @@
 import { ScoreKeys } from './core/types'
 
 export type InsertedScore = {
-  [type in ScoreKeys]: {
+  [key in ScoreKeys]: {
     userIds: string[]
     value: number
   }

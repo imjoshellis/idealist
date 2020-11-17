@@ -3,10 +3,11 @@ import { makeScore } from '.'
 import { ScoreKeys } from '../types'
 
 describe('score', () => {
+  const userIds = ['a', 'b', 'c']
+
   it('has a list of users for each type of score', () => {
-    const users = ['a', 'b', 'c']
     const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore({ [key]: users })[key].userIds).toEqual(users)
+      expect(makeScore({ [key]: { userIds } })[key].userIds).toEqual(userIds)
     }
     forEveryScoreKey(testScoreKey)
   })
@@ -20,19 +21,24 @@ describe('score', () => {
   })
 
   it('can count each type of score', () => {
-    const users = ['a', 'b', 'c']
     const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore({ [key]: users })[key].value).toEqual(users.length)
+      expect(makeScore({ [key]: { userIds } })[key].value).toEqual(
+        userIds.length
+      )
     }
     forEveryScoreKey(testScoreKey)
   })
 
   it('removes duplicates', () => {
-    const users = ['a', 'b', 'c', 'c']
+    const userIds = ['a', 'b', 'c', 'c']
     const uniqueUsers = ['a', 'b', 'c']
     const testScoreKey = (key: ScoreKeys) => {
-      expect(makeScore({ [key]: users })[key].userIds).toEqual(uniqueUsers)
-      expect(makeScore({ [key]: users })[key].value).toEqual(uniqueUsers.length)
+      expect(makeScore({ [key]: { userIds } })[key].userIds).toEqual(
+        uniqueUsers
+      )
+      expect(makeScore({ [key]: { userIds } })[key].value).toEqual(
+        uniqueUsers.length
+      )
     }
     forEveryScoreKey(testScoreKey)
   })

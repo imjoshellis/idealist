@@ -1,5 +1,4 @@
-import { forEveryScoreKeyAsync } from './../../__test__/index'
-import { generateMakeIdeaProps } from '../../__test__'
+import { forEveryScoreKeyAsync, generateMakeIdeaProps } from '../../__test__'
 import { ScoreKeys } from '../core/types'
 import { makeCreateIdea } from '../createIdea/createIdea'
 import { makeAddScore } from './../addScore/addScore'
@@ -31,17 +30,17 @@ describe('remove score', () => {
     const createIdea = makeCreateIdea({ ideaDb })
     id = (await createIdea(generateMakeIdeaProps())).id
     const addScore = makeAddScore({ ideaDb })
-    const testScoreKey = async (key: ScoreKeys) => {
+    const setupScoreDb = async (key: ScoreKeys) => {
       await addScore({ id, userId, key })
     }
-    await forEveryScoreKeyAsync(testScoreKey)
+    await forEveryScoreKeyAsync(setupScoreDb)
   })
 
   it('can remove score on an idea', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const testScoreKey = async (type: ScoreKeys) => {
-      const updatedIdea = await removeScore({ id, userId, key: type })
-      const { userIds, value } = updatedIdea.score[type]
+    const testScoreKey = async (key: ScoreKeys) => {
+      const updatedIdea = await removeScore({ id, userId, key })
+      const { userIds, value } = updatedIdea.score[key]
       expect(userIds).toEqual([])
       expect(value).toEqual(0)
     }
@@ -50,9 +49,9 @@ describe('remove score', () => {
 
   it('throws if idea does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const type = ScoreKeys.likes
+    const key = ScoreKeys.likes
     try {
-      await removeScore({ id: 'abc', userId, key: type })
+      await removeScore({ id: 'abc', userId, key })
       fail('Add score should have thrown an error')
     } catch (e) {
       expect(e.message).toBe('Idea not found')
@@ -61,13 +60,13 @@ describe('remove score', () => {
 
   it('does nothing if userId does not exist', async () => {
     const removeScore = makeRemoveScore({ ideaDb })
-    const testScoreKey = async (type: ScoreKeys) => {
-      const firstRemoval = await removeScore({ id, userId, key: type })
-      const firstScore = firstRemoval.score[type]
+    const testScoreKey = async (key: ScoreKeys) => {
+      const firstRemoval = await removeScore({ id, userId, key })
+      const firstScore = firstRemoval.score[key]
       expect(firstScore.userIds).toEqual([])
       expect(firstScore.value).toEqual(0)
-      const secondRemoval = await removeScore({ id, userId, key: type })
-      const secondScore = secondRemoval.score[type]
+      const secondRemoval = await removeScore({ id, userId, key })
+      const secondScore = secondRemoval.score[key]
       expect(secondScore.userIds).toEqual([])
       expect(secondScore.value).toEqual(0)
     }

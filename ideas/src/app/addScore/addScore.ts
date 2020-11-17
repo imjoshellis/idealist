@@ -1,7 +1,6 @@
 import { makeScore } from '../core/entities'
 import { ScoreKeys } from '../core/types'
 import { InsertedIdea } from '../useCaseTypes'
-import { buildMakeScoreProps } from '../useCaseUtils'
 
 interface AddScoreProps {
   id: string
@@ -17,12 +16,13 @@ export const makeAddScore = ({
     update: (obj: any) => Promise<InsertedIdea>
   }
 }) => {
-  return async ({ id, key, userId }: AddScoreProps) => {
+  return async ({ id, userId, key }: AddScoreProps) => {
     const ideaFromDb = await ideaDb.findOne({ id })
     if (!ideaFromDb) throw new Error('Idea not found')
 
-    const fn = (a: string[]) => [...a, userId]
-    const score = makeScore(buildMakeScoreProps(fn, ideaFromDb.score, key))
+    const userIds = [...ideaFromDb.score[key].userIds, userId]
+    const newScore = { [key]: { userIds } }
+    const score = makeScore({ ...ideaFromDb.score, ...newScore })
 
     return ideaDb.update({ id, score })
   }

@@ -1,6 +1,6 @@
 type Score = Readonly<
   {
-    [type in ScoreKeys]: {
+    [key in ScoreKeys]: {
       userIds: string[]
       value: number
     }
@@ -9,18 +9,14 @@ type Score = Readonly<
 
 type PartialScore = Readonly<
   {
-    [type in ScoreKeys]?: {
+    [key in ScoreKeys]?: {
       userIds: string[]
-      value: number
+      value?: number
     }
   }
 >
 
-type MakeScoreProps = {
-  [type in ScoreKeys]?: string[]
-}
-
-type MakeScore = (props?: MakeScoreProps) => Score
+type MakeScore = (props?: PartialScore) => Score
 
 enum ScoreKeys {
   stars = 'stars',
@@ -28,4 +24,4 @@ enum ScoreKeys {
   rejects = 'rejects'
 }
 
-export { Score, PartialScore, MakeScore, MakeScoreProps, ScoreKeys }
+export { Score, PartialScore, MakeScore, ScoreKeys }
