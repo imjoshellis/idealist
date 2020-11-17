@@ -1,4 +1,4 @@
-import { ScoreNames } from './core/types'
+import { ScoreNames } from './core'
 
 export type InsertedScore = {
   type: ScoreNames
