@@ -606,6 +606,11 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
+"@types/json-schema@^7.0.4":
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.6.tgz#f4c7ec43e81b319a9815115031709f26987891f0"
+  integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
+
 "@types/jsonwebtoken@^8.5.0":
   version "8.5.0"
   resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.5.0.tgz#2531d5e300803aa63279b232c014acf780c981c5"
@@ -3836,6 +3841,13 @@ punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
+
+purify-ts@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/purify-ts/-/purify-ts-0.16.0.tgz#c8bf236395913600b09f706512111241ddb5c533"
+  integrity sha512-FLqKjzXSRD8eZOehZtZHENN2TIuOcELv5ZidICsvqRQ77rfO/p4vSqxLq1MCq1skJsZ21MnJrJFXo2oCgeNwAg==
+  dependencies:
+    "@types/json-schema" "^7.0.4"
 
 qs@6.7.0:
   version "6.7.0"

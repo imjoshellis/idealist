@@ -27,6 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.3",
     "node-nats-streaming": "^0.3.2",
+    "purify-ts": "^0.16.0",
     "sanitize-html": "^2.1.2",
     "ts-adt": "^1.0.1",
     "ts-node-dev": "^1.0.0",
