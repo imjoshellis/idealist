@@ -1,85 +1,51 @@
-import { pipe } from 'fp-ts/lib/function'
-import * as E from 'fp-ts/lib/Either'
-import * as O from 'fp-ts/lib/Option'
-import * as ROA from 'fp-ts/lib/ReadonlyArray'
+import { ErrorEither } from './../definitions/ErrorEither'
+import { MakerFunctionFactory } from './../definitions/MakerFunctionFactory'
+import { either as E, function as FP, option as O, array as A } from 'fp-ts'
 import { Score, ScoreNames } from '..'
-import { MakerFunctionFactory } from '../definitions/MakerFunctionFactory'
 
-export type Deps = {
-  sanitize: (text: string) => string
-  makeScores: () => Score[]
-  Id: {
-    makeId: () => string
-    isValid: (id: string) => boolean
-  }
+type BaseIdea = {
+  id: string
+  text: string
+  userId: string
 }
 
-export type Idea = Readonly<{
-  text: string
-  id: string
-  userId: string
+export type Idea = BaseIdea & {
   scores: Score[]
-  getScoreByType: GetScoreByType
-}>
+  getScoreByType: (type: ScoreNames) => O.Option<Score>
+}
 
-export type PartialIdea = Readonly<{
-  text: string
-  id?: string
-  userId: string
+export type PartialIdea = BaseIdea & {
   scores?: Score[]
-  getScoreByType?: GetScoreByType
-}>
+  getScoreByType: (type: ScoreNames) => O.Option<Score>
+}
 
-type GetScoreByType = (type: ScoreNames) => EitherScore
-
-type EitherScore = E.Either<ScoreNotFoundError, Score>
-
-class ScoreNotFoundError extends Error {
-  public _tag: 'ScoreNotFoundError'
-
-  private constructor () {
-    super('Score not found')
-    this._tag = 'ScoreNotFoundError'
-  }
-
-  public static of (): ScoreNotFoundError {
-    return new ScoreNotFoundError()
-  }
+type Deps = {
+  Id: { isValid: (s: string) => boolean; makeId: () => string }
+  sanitize: (s: string) => string
+  generateEmptyScores: () => Score[]
 }
 
 export const buildMakeIdea: MakerFunctionFactory<Deps, PartialIdea, Idea> = ({
-  sanitize,
   Id: { isValid, makeId },
-  makeScores
-}) => {
-  return ({
-    text: unsafeText,
-    id = makeId(),
-    userId,
-    scores = makeScores()
-  }) => {
-    if (!isValid(id)) throw new Error('Idea must have valid id')
+  sanitize,
+  generateEmptyScores
+}) => ({
+  id = makeId(),
+  text: unsafeText,
+  userId,
+  scores = generateEmptyScores()
+}): ErrorEither<Idea> => {
+  if (!isValid(id)) return E.left(new Error('id is invalid'))
 
-    const text = pipe(unsafeText, sanitize, x => x.trim())
-    if (!text || text.length < 1) throw new Error('Idea must have valid text')
+  const text = FP.pipe(unsafeText, sanitize, s => s.trim())
+  if (!text) return E.left(new Error('text is invalid'))
 
-    const getScoreByType: GetScoreByType = type => {
-      const score = pipe(
-        scores,
-        ROA.filter(s => s.type === type),
-        ROA.head,
-        O.toNullable
-      )
-      if (!score) return E.left(ScoreNotFoundError.of())
-      return E.right(score)
-    }
-
-    return Object.freeze({
-      text,
-      id,
-      userId,
+  const getScoreByType = (type: ScoreNames): O.Option<Score> =>
+    FP.pipe(
       scores,
-      getScoreByType
-    })
-  }
+      A.filter(s => s.type === type),
+      A.head
+    )
+
+  return E.right({ id, text, userId, scores, getScoreByType })
 }

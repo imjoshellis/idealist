@@ -1,5 +1,6 @@
-import { Maybe } from './Maybe'
+import { ErrorEither } from './ErrorEither'
+import { UnionType } from './Maybe'
 
 export type MakerFunction<Partial, Result> = (
-  input: Maybe<Partial, Result>
-) => Result
+  input: UnionType<Partial, Result>
+) => ErrorEither<Result>

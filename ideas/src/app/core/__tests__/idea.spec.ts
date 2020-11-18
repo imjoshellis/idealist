@@ -1,56 +1,62 @@
-import { pipe } from 'fp-ts/lib/function'
+import { either as E, function as FP } from 'fp-ts'
 import { Id, makeIdea, ScoreNames } from '..'
 import {
   forEveryScoreName,
   generateMakeIdeaProps,
-  _unsafeExtractScore
+  _unsafeExtractEither,
+  _unsafeExtractOption
 } from '../../../__test__'
 
 describe('idea', () => {
   it('has text', () => {
     const props = generateMakeIdeaProps()
-    expect(makeIdea(props).text).toBe(props.text)
+    const idea = FP.pipe(props, makeIdea, _unsafeExtractEither)
+    expect(idea.text).toBe(props.text)
   })
 
   it('must have valid text', () => {
     const props = generateMakeIdeaProps({ text: '' })
-    expect(() => makeIdea(props)).toThrow()
+    expect(E.isLeft(makeIdea(props))).toBe(true)
   })
 
   it('sanitizes text', () => {
     const unsafeText = '<script>arst</script>text'
     const props = generateMakeIdeaProps({ text: unsafeText })
-    expect(makeIdea(props).text).toBe('text')
+    const idea = FP.pipe(props, makeIdea, _unsafeExtractEither)
+    expect(idea.text).toBe('text')
   })
 
   it('trims text whitespace', () => {
     const text = 'text   '
     const props = generateMakeIdeaProps({ text })
-    expect(makeIdea(props).text).toBe(text.trim())
+    const idea = FP.pipe(props, makeIdea, _unsafeExtractEither)
+    expect(idea.text).toBe(text.trim())
   })
 
-  it('has an id', () => {
+  it('has a valid id', () => {
     const props = generateMakeIdeaProps({ id: undefined })
-    expect(Id.isValid(makeIdea(props).id)).toBe(true)
+    const idea = FP.pipe(props, makeIdea, _unsafeExtractEither)
+    expect(Id.isValid(idea.id)).toBe(true)
   })
 
   it('rejects invalid ids', () => {
     const props = generateMakeIdeaProps({ id: 'bad id' })
     expect(Id.isValid(props.id)).toBe(false)
-    expect(() => makeIdea(props)).toThrow()
+    expect(E.isLeft(makeIdea(props))).toBe(true)
   })
 
   it('has a userId', () => {
     const userId = 'id'
     const props = generateMakeIdeaProps({ userId })
-    expect(makeIdea(props).userId).toBe(userId)
+    const idea = FP.pipe(props, makeIdea, _unsafeExtractEither)
+    expect(idea.userId).toBe(userId)
   })
 
   it('starts with empty scores', () => {
     const props = generateMakeIdeaProps()
     const test = (type: ScoreNames) => {
-      const idea = makeIdea(props)
-      const score = pipe(type, idea.getScoreByType, _unsafeExtractScore)
+      const idea = FP.pipe(props, makeIdea, _unsafeExtractEither)
+      const score = FP.pipe(type, idea.getScoreByType, _unsafeExtractOption)
       expect(score.value).toBe(0)
     }
     forEveryScoreName(test)

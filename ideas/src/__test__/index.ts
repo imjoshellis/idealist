@@ -1,7 +1,9 @@
+import { ErrorEither } from './../app/core/definitions/ErrorEither'
 import faker from 'faker'
 import * as E from 'fp-ts/lib/Either'
+import * as O from 'fp-ts/lib/Option'
 import { ObjectId } from 'mongodb'
-import { EitherScore, ScoreNames } from '../app/core'
+import { ScoreNames } from '../app/core'
 
 export const generateMakeIdeaProps = (overrides?: any) => {
   const idea = {
@@ -27,7 +29,12 @@ export const forEveryScoreNameAsync = async (
   }
 }
 
-export const _unsafeExtractScore = (eitherScore: EitherScore) => {
-  if (E.isLeft(eitherScore)) throw eitherScore.left
-  return eitherScore.right
+export const _unsafeExtractEither = <T>(e: ErrorEither<T>): T => {
+  if (E.isLeft(e)) throw new Error()
+  return e.right
+}
+
+export const _unsafeExtractOption = <T>(o: O.Option<T>): T => {
+  if (O.isNone(o)) throw new Error()
+  return o.value
 }

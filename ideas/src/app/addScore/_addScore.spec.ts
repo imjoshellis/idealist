@@ -1,11 +1,11 @@
 import { pipe } from 'fp-ts/lib/function'
 import { forEveryScoreNameAsync, generateMakeIdeaProps } from '../../__test__'
 import { ScoreNames } from '../core'
-import { _unsafeExtractScore } from './../../__test__/index'
-import { makeCreateIdea } from './../createIdea/createIdea'
+import { _unsafeExtractScore } from '../../__test__/index'
+import { makeCreateIdea } from '../createIdea/createIdea'
 import { makeAddScore } from './addScore'
 
-describe('add score', () => {
+describe.skip('add score', () => {
   let ideas: any[] = []
   const ideaDb = {
     insert: (obj: any) => {

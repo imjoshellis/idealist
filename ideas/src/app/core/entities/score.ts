@@ -1,18 +1,17 @@
-import { eqString } from 'fp-ts/Eq'
-import * as ROA from 'fp-ts/lib/ReadonlyArray'
+import { array as A, eq as EQ, either as E } from 'fp-ts'
 import { MakerFunction } from '../definitions/MakerFunction'
 
-export type Score = Readonly<{
+export type Score = {
   type: ScoreNames
-  userIds: readonly string[]
+  userIds: string[]
   value: number
-}>
+}
 
-export type PartialScore = Readonly<{
+export type PartialScore = {
   type: ScoreNames
-  userIds?: readonly string[]
+  userIds?: string[]
   value?: number
-}>
+}
 
 export enum ScoreNames {
   stars = 'stars',
@@ -20,11 +19,17 @@ export enum ScoreNames {
   rejects = 'rejects'
 }
 
+export const makeEmptyScore = ({ type }: PartialScore): Score => ({
+  type,
+  userIds: [],
+  value: 0
+})
+
 export const makeScore: MakerFunction<PartialScore, Score> = ({
   type,
   userIds: newUserIds = []
 }) => {
-  const userIds = ROA.uniq(eqString)(newUserIds)
+  const userIds = A.uniq(EQ.eqString)(newUserIds)
   const value = userIds.length
-  return Object.freeze({ type, userIds, value })
+  return E.right({ type, userIds, value })
 }

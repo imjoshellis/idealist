@@ -1,18 +1,34 @@
+import { pipe } from 'fp-ts/lib/function'
+import * as A from 'fp-ts/lib/Array'
+import * as O from 'fp-ts/lib/Option'
+import { makeIdea, makeScore, Score } from '../core'
 import { MakeRemoveScore } from './removeScore.types'
-import { makeIdea, makeScore } from '../core'
 
 export const makeRemoveScore: MakeRemoveScore = ({ ideaDb }) => {
   return async ({ id, userId, type }) => {
     const ideaFromDb = await ideaDb.findOne({ id })
     if (!ideaFromDb) throw new Error('Idea not found')
 
-    const scores = ideaFromDb.scores.map(s =>
-      s.type === type
-        ? makeScore({ type, userIds: s.userIds.filter(u => u !== userId) })
-        : s
+    const newScore = (s: Score) =>
+      makeScore({
+        type,
+        userIds: s?.userIds.filter(u => u !== userId)
+      })
+
+    const scores = pipe(
+      ideaFromDb.scores,
+      O.fromNullable,
+      O.bindTo('scores'),
+      O.bind('index', ({ scores }) =>
+        A.findIndex((s: Score) => s.type === type)(scores)
+      ),
+      O.map(({ scores, index }) => A.modifyAt(index, newScore)(scores))
     )
 
-    const idea = makeIdea({ ...ideaFromDb, scores })
+    if (O.isNone(scores)) throw Error
+    if (O.isNone(scores.value)) throw Error
+
+    const idea = makeIdea({ ...ideaFromDb, scores: scores.value.value })
     await ideaDb.update({ id, scores: idea.scores })
 
     return idea

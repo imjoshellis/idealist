@@ -9,7 +9,7 @@ import { makeCreateIdea } from '../createIdea/createIdea'
 import { makeAddScore } from '../addScore/addScore'
 import { makeRemoveScore } from './removeScore'
 
-describe('remove score', () => {
+describe.skip('remove score', () => {
   let ideas: any[] = []
   const ideaDb = {
     insert: (obj: any) => {

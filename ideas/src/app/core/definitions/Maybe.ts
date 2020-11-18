@@ -1,1 +1,1 @@
-export type Maybe<T, S> = T | S
+export type UnionType<T, S> = T | S

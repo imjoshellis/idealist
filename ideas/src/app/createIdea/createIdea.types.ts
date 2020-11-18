@@ -1,7 +1,9 @@
-import { Idea, MaybeIdea } from '../core'
+import { Idea } from '../core'
+import { ErrorEither } from '../core/definitions/ErrorEither'
+import { ErrorTaskEither } from '../core/definitions/ErrorTaskEither'
 import { InsertedIdea } from '../useCase.types'
 
-type CreateIdea = (props: MaybeIdea) => Promise<Idea>
+type CreateIdea = (props: ErrorEither<Idea>) => ErrorTaskEither<InsertedIdea>
 
 interface MakeCreateIdeaProps {
   ideaDb: {
