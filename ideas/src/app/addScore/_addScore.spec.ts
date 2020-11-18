@@ -1,7 +1,6 @@
-import { pipe } from 'fp-ts/lib/function'
+// @ts-nocheck
 import { forEveryScoreNameAsync, generateMakeIdeaProps } from '../../__test__'
 import { ScoreNames } from '../core'
-import { _unsafeExtractScore } from '../../__test__/index'
 import { makeCreateIdea } from '../createIdea/createIdea'
 import { makeAddScore } from './addScore'
 

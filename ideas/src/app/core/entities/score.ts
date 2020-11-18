@@ -1,16 +1,13 @@
-import { array as A, eq as EQ, either as E } from 'fp-ts'
-import { MakerFunction } from '../definitions/MakerFunction'
+import { Either, List, Maybe, Right } from 'purify-ts'
+import { Entity } from './entity'
 
-export type Score = {
+export interface BaseScore extends Entity {
   type: ScoreNames
   userIds: string[]
-  value: number
 }
 
-export type PartialScore = {
-  type: ScoreNames
-  userIds?: string[]
-  value?: number
+export interface Score extends BaseScore {
+  value: number
 }
 
 export enum ScoreNames {
@@ -19,17 +16,31 @@ export enum ScoreNames {
   rejects = 'rejects'
 }
 
-export const makeEmptyScore = ({ type }: PartialScore): Score => ({
+export const makeGetScore = (scores: Score[]) => (
+  type: ScoreNames
+): Maybe<Score> => List.find(s => s.type === type, scores)
+
+const makeEmptyScore = (type: ScoreNames): Score => ({
   type,
   userIds: [],
   value: 0
 })
 
-export const makeScore: MakerFunction<PartialScore, Score> = ({
-  type,
-  userIds: newUserIds = []
-}) => {
-  const userIds = A.uniq(EQ.eqString)(newUserIds)
-  const value = userIds.length
-  return E.right({ type, userIds, value })
+export const genEmptyScores = (): Score[] => {
+  return Object.values(ScoreNames).map(makeEmptyScore)
 }
+
+const filterUserIds = (s: BaseScore) => ({
+  ...s,
+  userIds: [...new Set(s.userIds)]
+})
+
+const calculateValue = (s: BaseScore) => ({
+  ...s,
+  value: s.userIds.length
+})
+
+export const makeScore = ({ type, userIds }: BaseScore): Either<Error, Score> =>
+  Right({ type, userIds })
+    .map(filterUserIds)
+    .map(calculateValue)

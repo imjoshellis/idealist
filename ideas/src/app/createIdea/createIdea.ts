@@ -1,21 +1,19 @@
-import { taskEither as TE, either as E } from 'fp-ts'
-import { MakeCreateIdea } from './createIdea.types'
+import { Either, EitherAsync } from 'purify-ts'
+import { Idea } from '../core'
+import { InsertedIdea } from '../useCase.types'
 
-export const makeCreateIdea: MakeCreateIdea = ({ ideaDb }) => {
-  return idea => {
-    if (E.isLeft(idea))
-      return TE.left(new Error('there was a problem with the given idea'))
-    const { id, text, userId, scores } = idea.right
+type CreateIdea = (
+  props: Either<Error, Idea>
+) => EitherAsync<Error, InsertedIdea>
 
-    return TE.tryCatch(
-      () =>
-        ideaDb.insert({
-          id,
-          text,
-          userId,
-          scores
-        }),
-      () => new Error('saving to db failed')
-    )
+interface Deps {
+  ideaDb: {
+    insert: (obj: any) => Promise<InsertedIdea>
   }
 }
+export type MakeCreateIdea = (props: Deps) => CreateIdea
+
+export const makeCreateIdea: MakeCreateIdea = ({ ideaDb }) => idea =>
+  EitherAsync.liftEither(idea).chain(({ id, text, userId, scores }) =>
+    EitherAsync(() => ideaDb.insert({ id, text, userId, scores }))
+  )

@@ -1,19 +1,21 @@
 import { ObjectId } from 'mongodb'
 import sanitizeHtml from 'sanitize-html'
 import { buildMakeIdea } from './entities/idea'
-import { makeEmptyScore, makeScore, Score, ScoreNames } from './entities/score'
+import { makeScore, makeGetScore, genEmptyScores } from './entities/score'
+import { flow } from './fp/flow'
 
-const sanitize = (text: string) => sanitizeHtml(text)
 const Id = Object.freeze({
   makeId: () => new ObjectId().toHexString(),
-  isValid: (id: string) => ObjectId.isValid(id)
+  isValid: ObjectId.isValid
 })
 
-const generateEmptyScores = (): Score[] => {
-  return Object.values(ScoreNames).map(type => makeEmptyScore({ type }))
+const Text = {
+  sanitize: flow(sanitizeHtml, s => s.trim()),
+  isValid: (s: string) => !!s
 }
-const makeIdea = buildMakeIdea({ sanitize, Id, generateEmptyScores })
+
+const makeIdea = buildMakeIdea({ Text, Id, makeGetScore, genEmptyScores })
 
 export * from './entities/idea'
 export * from './entities/score'
-export { Id, makeIdea, makeScore }
+export { Id, Text, makeIdea, makeScore }

@@ -1,51 +1,41 @@
-import { ErrorEither } from './../definitions/ErrorEither'
-import { MakerFunctionFactory } from './../definitions/MakerFunctionFactory'
-import { either as E, function as FP, option as O, array as A } from 'fp-ts'
+import { Either, Maybe, Right } from 'purify-ts'
 import { Score, ScoreNames } from '..'
+import { Entity, validate } from './entity'
 
-type BaseIdea = {
+interface BaseIdea extends Entity {
   id: string
   text: string
   userId: string
 }
 
-export type Idea = BaseIdea & {
+export interface Idea extends BaseIdea {
   scores: Score[]
-  getScoreByType: (type: ScoreNames) => O.Option<Score>
+  getScore: (type: ScoreNames) => Maybe<Score>
 }
 
-export type PartialIdea = BaseIdea & {
+export interface PartialIdea extends BaseIdea {
   scores?: Score[]
-  getScoreByType: (type: ScoreNames) => O.Option<Score>
+  getScore: (type: ScoreNames) => Maybe<Score>
 }
 
 type Deps = {
   Id: { isValid: (s: string) => boolean; makeId: () => string }
-  sanitize: (s: string) => string
-  generateEmptyScores: () => Score[]
+  Text: { isValid: (s: string) => boolean; sanitize: (s: string) => string }
+  genEmptyScores: () => Score[]
+  makeGetScore: (scores: Score[]) => (type: ScoreNames) => Maybe<Score>
 }
 
-export const buildMakeIdea: MakerFunctionFactory<Deps, PartialIdea, Idea> = ({
-  Id: { isValid, makeId },
-  sanitize,
-  generateEmptyScores
-}) => ({
-  id = makeId(),
-  text: unsafeText,
-  userId,
-  scores = generateEmptyScores()
-}): ErrorEither<Idea> => {
-  if (!isValid(id)) return E.left(new Error('id is invalid'))
-
-  const text = FP.pipe(unsafeText, sanitize, s => s.trim())
-  if (!text) return E.left(new Error('text is invalid'))
-
-  const getScoreByType = (type: ScoreNames): O.Option<Score> =>
-    FP.pipe(
-      scores,
-      A.filter(s => s.type === type),
-      A.head
-    )
-
-  return E.right({ id, text, userId, scores, getScoreByType })
-}
+export const buildMakeIdea = ({
+  Id,
+  Text,
+  genEmptyScores,
+  makeGetScore
+}: Deps) => ({
+  id = Id.makeId(),
+  scores = genEmptyScores(),
+  ...args
+}: PartialIdea): Either<Error, Idea> =>
+  Right({ ...args, id, scores, getScore: makeGetScore(scores) })
+    .chain(validate('id', Id.isValid))
+    .map(i => ({ ...i, text: Text.sanitize(i.text) }))
+    .chain(validate('text', Text.isValid))
