@@ -1,4 +1,4 @@
-import { Maybe } from 'purify-ts'
+import { Either, Maybe, NonEmptyList } from 'purify-ts'
 import { Score, ScoreNames } from '..'
 import { Entity } from './entity'
 
@@ -6,14 +6,11 @@ export type BaseIdea = Entity & {
   id: string
   text: string
   userId: string
+  scores: NonEmptyList<Score>
 }
 
-export type PartialIdea = BaseIdea & {
-  scores?: Score[]
-  getScore?: (type: ScoreNames) => Maybe<Score>
-}
-
-export type Idea = BaseIdea & {
-  scores: Score[]
+export type FullIdea = BaseIdea & {
   getScore: (type: ScoreNames) => Maybe<Score>
 }
+
+export type Idea = Either<Error, FullIdea>

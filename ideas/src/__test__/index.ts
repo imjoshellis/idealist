@@ -1,12 +1,13 @@
 import faker from 'faker'
 import { ObjectId } from 'mongodb'
-import { ScoreNames } from '../app/core'
+import { BaseIdea, makeEmptyScores, ScoreNames } from '../app/core'
 
 export const generateMakeIdeaProps = (overrides?: any) => {
-  const idea = {
+  const idea: BaseIdea = {
     text: faker.lorem.sentence(),
     id: new ObjectId().toHexString(),
-    userId: new ObjectId().toHexString()
+    userId: new ObjectId().toHexString(),
+    scores: makeEmptyScores()
   }
 
   return { ...idea, ...overrides }

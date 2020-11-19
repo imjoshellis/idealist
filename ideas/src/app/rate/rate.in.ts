@@ -1,4 +1,8 @@
 import { Either } from 'purify-ts'
-import { Idea } from '../core'
+import { Idea, ScoreNames } from '../core'
 
-export type RateInput = Either<Error, Idea>
+export type RateInput = {
+  idea: Either<Error, Idea>
+  type: ScoreNames
+  userId: string
+}

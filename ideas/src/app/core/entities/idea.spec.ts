@@ -1,6 +1,7 @@
-import { makeIdea, ScoreNames } from '..'
+import { makeIdea, makeScore, Score, ScoreNames } from '..'
 import { forEveryScoreName, generateMakeIdeaProps } from '../../../__test__'
 import { Id } from '../core.deps'
+import { makeEmptyScores } from './score.utils'
 
 describe('idea', () => {
   it('has text', () => {
@@ -48,12 +49,31 @@ describe('idea', () => {
     expect(idea.userId).toBe(userId)
   })
 
-  it('starts with empty scores', () => {
+  it('starts with empty scores if given blank props', () => {
     const props = generateMakeIdeaProps()
     const test = (type: ScoreNames) => {
       const idea = makeIdea(props).unsafeCoerce()
-      const score = idea.getScore(type).unsafeCoerce()
-      expect(score.value).toBe(0)
+      const score = idea
+        .getScore(type)
+        .unsafeCoerce()
+        .unsafeCoerce()
+      expect(score.value).toEqual(0)
+    }
+    forEveryScoreName(test)
+  })
+
+  it('has correct score values if initialized with scores', () => {
+    const test = (type: ScoreNames) => {
+      const scores = makeEmptyScores().map(
+        (s): Score => s.chain(s => makeScore({ ...s, userIds: ['a'] }))
+      )
+      const props = generateMakeIdeaProps({ scores })
+      const idea = makeIdea(props).unsafeCoerce()
+      const score = idea
+        .getScore(type)
+        .unsafeCoerce()
+        .unsafeCoerce()
+      expect(score.value).toEqual(1)
     }
     forEveryScoreName(test)
   })

@@ -1,12 +1,12 @@
+import { Id, Text } from './core.deps'
 import { buildMakeIdea } from './entities/idea'
-import { makeEmptyScores, buildGetScore } from './entities/score.utils'
-import { Text, Id } from './core.deps'
+import { buildGetScore } from './entities/score.utils'
 
-const makeIdea = buildMakeIdea({ Text, Id, buildGetScore, makeEmptyScores })
+const makeIdea = buildMakeIdea({ Text, Id, buildGetScore })
 
-export { makeIdea }
 export * from './entities/idea'
 export * from './entities/idea.types'
 export * from './entities/score'
 export * from './entities/score.types'
 export * from './entities/score.utils'
+export { makeIdea }
