@@ -1,41 +1,26 @@
 import { Either, Maybe, Right } from 'purify-ts'
-import { Score, ScoreNames } from '..'
-import { Entity, validate } from './entity'
-
-interface BaseIdea extends Entity {
-  id: string
-  text: string
-  userId: string
-}
-
-export interface Idea extends BaseIdea {
-  scores: Score[]
-  getScore: (type: ScoreNames) => Maybe<Score>
-}
-
-export interface PartialIdea extends BaseIdea {
-  scores?: Score[]
-  getScore: (type: ScoreNames) => Maybe<Score>
-}
+import { Score, ScoreNames } from '../entities/score.types'
+import { validate } from './entity'
+import { Idea, PartialIdea } from './idea.types'
 
 type Deps = {
   Id: { isValid: (s: string) => boolean; makeId: () => string }
   Text: { isValid: (s: string) => boolean; sanitize: (s: string) => string }
-  genEmptyScores: () => Score[]
-  makeGetScore: (scores: Score[]) => (type: ScoreNames) => Maybe<Score>
+  makeEmptyScores: () => Score[]
+  buildGetScore: (scores: Score[]) => (type: ScoreNames) => Maybe<Score>
 }
 
 export const buildMakeIdea = ({
   Id,
   Text,
-  genEmptyScores,
-  makeGetScore
+  makeEmptyScores,
+  buildGetScore
 }: Deps) => ({
   id = Id.makeId(),
-  scores = genEmptyScores(),
+  scores = makeEmptyScores(),
   ...args
 }: PartialIdea): Either<Error, Idea> =>
-  Right({ ...args, id, scores, getScore: makeGetScore(scores) })
+  Right({ ...args, id, scores, getScore: buildGetScore(scores) })
     .chain(validate('id', Id.isValid))
     .map(i => ({ ...i, text: Text.sanitize(i.text) }))
     .chain(validate('text', Text.isValid))

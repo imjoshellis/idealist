@@ -1,6 +1,6 @@
 import { Either, Left, Right } from 'purify-ts'
 
-export interface Entity {
+export type Entity = {
   [key: string]: any
 }
 

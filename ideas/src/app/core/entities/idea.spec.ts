@@ -1,5 +1,6 @@
-import { Id, makeIdea, ScoreNames } from '..'
+import { makeIdea, ScoreNames } from '..'
 import { forEveryScoreName, generateMakeIdeaProps } from '../../../__test__'
+import { Id } from '../core.deps'
 
 describe('idea', () => {
   it('has text', () => {
