@@ -1,0 +1,29 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - 'infra/k8s/*.yaml'
+      - 'infra/k8s-dev/*.yaml'
+build:
+  local:
+    push: false
+  artifacts:
+    - image: imjoshellis/idealist-ideas
+      context: ideas
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: imjoshellis/idealist-client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.tsx'
+            dest: .
+          - src: '**/*.ts'
+            dest: .
