@@ -1,5 +1,5 @@
 import { RepositoryIdea } from '../app.types'
 
 export type CreateRepository = {
-  insert: (obj: any) => Promise<RepositoryIdea>
+  insert: (idea: RepositoryIdea) => Promise<RepositoryIdea>
 }

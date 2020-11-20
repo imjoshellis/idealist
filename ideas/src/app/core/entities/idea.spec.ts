@@ -65,7 +65,7 @@ describe('idea', () => {
   it('has correct score values if initialized with scores', () => {
     const test = (type: ScoreNames) => {
       const scores = makeEmptyScores().map(
-        (s): Score => s.chain(s => makeScore({ ...s, userIds: ['a'] }))
+        (s): Score => s.chain((s): Score => makeScore({ ...s, userIds: ['a'] }))
       )
       const props = generateMakeIdeaProps({ scores })
       const idea = makeIdea(props).unsafeCoerce()

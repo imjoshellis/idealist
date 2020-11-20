@@ -1,12 +1,12 @@
-// @ts-nocheck
+import { RepositoryIdea } from './../app.types'
 import { CreateRepository } from './create.repository'
 import { forEveryScoreName, generateMakeIdeaProps } from '../../__test__'
 import { makeIdea, ScoreNames } from '../core'
 import { makeCreateInteractor } from './create.interactor'
 
-describe.skip('create', () => {
+describe('create', () => {
   const ideaDb: CreateRepository = {
-    insert: async (obj: any) => obj
+    insert: async (idea: RepositoryIdea) => idea
   }
 
   const createIdea = makeCreateInteractor({ ideaDb })
@@ -35,6 +35,7 @@ describe.skip('create', () => {
       const { userIds, value } = idea
         .unsafeCoerce()
         .getScore(type)
+        .unsafeCoerce()
         .unsafeCoerce()
       const score = inserted.scores.filter(s => s.type === type)[0]
       expect(userIds).toEqual(score.userIds)
