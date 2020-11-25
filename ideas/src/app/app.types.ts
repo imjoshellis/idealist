@@ -4,7 +4,7 @@ export type RepositoryScore = BaseScore & {
   value: number
 }
 
-export type RepositoryIdea = {
+export interface RepositoryIdea {
   id: string
   userId: string
   text: string

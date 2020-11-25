@@ -1,6 +1,6 @@
 import { Either, Left, Right } from 'purify-ts'
 
-export type Entity = {
+export interface Entity {
   [key: string]: any
 }
 
@@ -16,5 +16,6 @@ class InvalidInput extends Error {
   private constructor (type: string) {
     super(`${type} is invalid`)
   }
-  static of = (type: string) => new InvalidInput(type)
+
+  static of = (type: string): InvalidInput => new InvalidInput(type)
 }

@@ -38,7 +38,7 @@ describe.skip('rate', () => {
 
   it('can increase scores on empty idea', async () => {
     const rateIdea = makeRateInteractor({ ideaDb })
-    const test = async (type: ScoreNames) => {
+    const test = async (type: ScoreNames): Promise<void> => {
       const updatedIdea = (
         await rateIdea({ idea, type, userId }).run()
       ).unsafeCoerce()

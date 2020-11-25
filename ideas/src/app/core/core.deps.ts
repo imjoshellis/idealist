@@ -8,7 +8,7 @@ const Id = Object.freeze({
 
 const Text = {
   sanitize: (s: string) => sanitizeHtml(s).trim(),
-  isValid: (s: string) => !!s
+  isValid: (s: string) => s !== ''
 }
 
 export { Id, Text }

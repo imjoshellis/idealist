@@ -5,7 +5,7 @@ describe('score', () => {
   const userIds = ['a', 'b', 'c']
 
   it('has a list of users', () => {
-    const test = (type: ScoreNames) => {
+    const test = (type: ScoreNames): void => {
       const score = makeScore({ type, userIds }).unsafeCoerce()
       expect(score.userIds).toEqual(userIds)
     }
@@ -13,7 +13,7 @@ describe('score', () => {
   })
 
   it('creates correct values', () => {
-    const test = (type: ScoreNames) => {
+    const test = (type: ScoreNames): void => {
       const score = makeScore({ type, userIds }).unsafeCoerce()
       expect(score.value).toEqual(userIds.length)
     }
@@ -23,7 +23,7 @@ describe('score', () => {
   it('removes duplicates', () => {
     const userIds = ['a', 'b', 'c', 'c']
     const uniqueUsers = ['a', 'b', 'c']
-    const test = (type: ScoreNames) => {
+    const test = (type: ScoreNames): void => {
       const score = makeScore({ type, userIds }).unsafeCoerce()
       expect(score.userIds).toEqual(uniqueUsers)
       expect(score.value).toEqual(uniqueUsers.length)

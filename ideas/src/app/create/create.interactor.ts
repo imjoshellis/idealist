@@ -21,5 +21,5 @@ export const makeCreateInteractor: MakeCreateInteractor = ({
   EitherAsync.liftEither(idea)
     .map(convert)
     .chain(({ id, text, userId, scores }) =>
-      EitherAsync(() => ideaDb.insert({ id, text, userId, scores }))
+      EitherAsync(async () => await ideaDb.insert({ id, text, userId, scores }))
     )

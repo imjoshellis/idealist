@@ -3,9 +3,9 @@ import { Score, ScoreNames } from '../entities/score.types'
 import { validate } from './entity'
 import { BaseIdea, Idea } from './idea.types'
 
-type Deps = {
-  Id: { isValid: (s: string) => boolean; makeId: () => string }
-  Text: { isValid: (s: string) => boolean; sanitize: (s: string) => string }
+interface Deps {
+  Id: { isValid: (s: string) => boolean, makeId: () => string }
+  Text: { isValid: (s: string) => boolean, sanitize: (s: string) => string }
   buildGetScore: (
     scores: NonEmptyList<Score>
   ) => (type: ScoreNames) => Maybe<Score>

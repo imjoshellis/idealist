@@ -1,12 +1,12 @@
 import { app } from './app'
 import { MongoClient } from 'mongodb'
 
-export const start = async () => {
+export const start = async (): Promise<void> => {
   console.log('Starting Ideas Service: /api/ideas')
   const { JWT_KEY, MONGO_URI } = process.env
 
-  if (!JWT_KEY) throw new Error('JWT_KEY must be defined')
-  if (!MONGO_URI) throw new Error('MONGO_URI must be defined')
+  if (JWT_KEY === undefined) throw new Error('JWT_KEY must be defined')
+  if (MONGO_URI === undefined) throw new Error('MONGO_URI must be defined')
 
   const client = new MongoClient(MONGO_URI, {
     useNewUrlParser: true,

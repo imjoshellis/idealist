@@ -1,5 +1,5 @@
 import { RepositoryIdea } from '../app.types'
 
-export type CreateRepository = {
+export interface CreateRepository {
   insert: (idea: RepositoryIdea) => Promise<RepositoryIdea>
 }

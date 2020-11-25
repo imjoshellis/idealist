@@ -5,7 +5,7 @@ let mongo: MongoMemoryServer
 let db: Db
 let client: MongoClient
 
-export const makeDb = async () => {
+export const makeDb = async (): Promise<any> => {
   mongo = new MongoMemoryServer()
   const MONGO_URI = await mongo.getUri()
 
@@ -15,16 +15,16 @@ export const makeDb = async () => {
   })
 
   await client.connect()
-  db = db || client.db('test')
+  db = client.db('test')
   return db
 }
 
-export async function closeDb () {
+export async function closeDb (): Promise<void> {
   await mongo.stop()
   await client.close()
 }
 
-export async function clearDb () {
+export async function clearDb (): Promise<boolean> {
   await db.collection('ideas').deleteMany({})
   return true
 }

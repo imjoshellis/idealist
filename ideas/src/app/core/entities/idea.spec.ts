@@ -51,7 +51,7 @@ describe('idea', () => {
 
   it('starts with empty scores if given blank props', () => {
     const props = generateMakeIdeaProps()
-    const test = (type: ScoreNames) => {
+    const test = (type: ScoreNames): void => {
       const idea = makeIdea(props).unsafeCoerce()
       const score = idea
         .getScore(type)
@@ -63,7 +63,7 @@ describe('idea', () => {
   })
 
   it('has correct score values if initialized with scores', () => {
-    const test = (type: ScoreNames) => {
+    const test = (type: ScoreNames): void => {
       const scores = makeEmptyScores().map(
         (s): Score => s.chain((s): Score => makeScore({ ...s, userIds: ['a'] }))
       )

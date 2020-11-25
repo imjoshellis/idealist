@@ -9,14 +9,13 @@ import { makeIdea, makeScore, Score, ScoreNames } from '../core'
 type RateInteractor = (input: RateInput) => EitherAsync<Error, RepositoryIdea>
 type MakeRateInteractor = (deps: { ideaDb: RateRepository }) => RateInteractor
 
-const makeMaybeScoreArray = (arr: RepositoryScore[]) => arr.map(makeScore)
 const replace = (
   arr: RepositoryScore[],
   targetType: ScoreNames,
   userId: string
 ): Score[] => {
   const [targetScore, ...rest] = arr.reduce(
-    (acc: Either<Error, Score>[], cur) =>
+    (acc: Array<Either<Error, Score>>, cur) =>
       cur.type === targetType
         ? [makeScore(cur), ...acc]
         : [...acc, makeScore(cur)],
@@ -50,5 +49,5 @@ export const makeRateInteractor: MakeRateInteractor = ({ ideaDb }) => ({
     )
     .chain(idea => EitherAsync.liftEither(rateIdea(type, userId, idea)))
     .chain(idea => {
-      return EitherAsync(() => ideaDb.update(idea))
+      return EitherAsync(async () => await ideaDb.update(idea))
     })

@@ -31,7 +31,7 @@ describe('create', () => {
 
   it('initializes with correct default score', async () => {
     const inserted = (await createIdea(idea).run()).unsafeCoerce()
-    const test = (type: ScoreNames) => {
+    const test = (type: ScoreNames): void => {
       const { userIds, value } = idea
         .unsafeCoerce()
         .getScore(type)
