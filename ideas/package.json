@@ -12,7 +12,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./src/__test__/setup.ts"]
+    "setupFilesAfterEnv": [
+      "./src/__test__/setup.ts"
+    ]
   },
   "dependencies": {
     "@types/cookie-session": "^2.0.41",
@@ -37,9 +39,9 @@
     "@types/mongodb": "^3.5.33",
     "@types/sanitize-html": "^1.27.0",
     "@types/supertest": "^2.0.10",
-    "@typescript-eslint/eslint-plugin": "4",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
-    "eslint": "7",
+    "eslint": "^7.14.0",
     "eslint-config-standard-with-typescript": "^19.0.1",
     "eslint-plugin-import": "2",
     "eslint-plugin-jest": "^24.1.3",
