@@ -25,7 +25,7 @@ Tech:
 - Next.js
 - Apollo GraphQL Client
 
-#### index
+#### /index
 
 As a user, I can...
 
@@ -38,7 +38,7 @@ As a user, I can...
   - With my unique name (if my name is not unique, I will be prompted to change it)
   - With a unique 6 character code (similar to among us)
 
-#### room (brainstorm mode)
+#### /rooms/id (brainstorm mode)
 
 As a user, I can...
 
@@ -53,7 +53,7 @@ As the room owner, I can...
 - Do everything a normal user can do
 - End the round early
 
-#### room (review mode)
+#### /rooms/id (review mode)
 
 As a user, I can...
 
@@ -65,11 +65,11 @@ As a user, I can...
 As the room owner, I can...
 
 - Do everything a normal user can do
-- Mark ideas as accepted
-- Unmark ideas as accepted
-- Mark ideas as rejected
-- Unmark ideas as rejected
-- Start a new idea round (which will add on to the current list)
+- Flag ideas as accepted/rejected
+- Remove flag from ideas
+- Put the room back into brainstorm mode
+- See when the room will be deleted (12hrs from creation)
+- Manually trigger room deletion
 
 ### backend
 
@@ -84,6 +84,7 @@ Each room will be a document in MongoDB.
 {
   _id: ObjectID,
   owner: ObjectID,
+  mode: Integer,
   users: [
     {
       _id: ObjectID,
@@ -109,28 +110,8 @@ Each room will be a document in MongoDB.
     - The timer ending
     - (hitting the idea goal will not auto-switch)
 
-The rooms service...
-
-- uses mongodb to maintain data (auto-purges data older than 24 hrs)
-- has a REST endpoint for the graphql interface
-- uses NATs to communicate with other backend services
-
-### users
-
-Maintains information about each user.
-
 - A user belongs to one room
 - A user has many ideas
-
-The users service...
-
-- uses mongodb to maintain data (auto-purges data older than 24 hrs)
-- has a REST endpoint for the graphql interface
-- uses NATs to communicate with other backend services
-
-### ideas
-
-Maintains information about each idea.
 
 - An idea belongs to one user
 - An idea belongs to one room
@@ -138,19 +119,10 @@ Maintains information about each idea.
   - Accepted
   - Rejected
   - Pending
+  
+Will need to consider best way to maintain timer. For MVP, a simple go routine should suffice.
 
-The ideas service...
-
-- uses mongodb to maintain data (auto-purges data older than 24 hrs)
-- has a REST endpoint for the graphql interface
-- uses NATs to communicate with other backend services
-
-### timer
-
-Runs timers for the rooms service.
-
-- uses Redis to run the timer
-- uses NATs to communicate with other backend services
+---
 
 ## possible microservice future
 
